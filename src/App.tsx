@@ -751,6 +751,33 @@ export default function App() {
     }
   }, [authLoading, user]);
 
+  // Real-time license monitoring (Logout if deleted)
+  useEffect(() => {
+    const savedKey = localStorage.getItem('ultra_hack_key');
+    if (isAuthenticated && savedKey && view === 'dashboard') {
+      const unsubscribe = onSnapshot(doc(db, 'keys', savedKey), (snapshot) => {
+        if (!snapshot.exists()) {
+          console.log("License was deleted by system administrator.");
+          setIsAuthenticated(false);
+          setView('login');
+          setError("Your session has been terminated by administrator.");
+          localStorage.removeItem('ultra_hack_key');
+        } else {
+          const data = snapshot.data() as License;
+          if (data.status === 'expired') {
+            setIsAuthenticated(false);
+            setView('login');
+            setError("Your session has expired.");
+            localStorage.removeItem('ultra_hack_key');
+          }
+        }
+      }, (error) => {
+        console.error("License Monitor Error:", error);
+      });
+      return () => unsubscribe();
+    }
+  }, [isAuthenticated, view]);
+
   const checkLicense = async (key: string) => {
     const path = `keys/${key}`;
     try {
