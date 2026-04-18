@@ -36,8 +36,7 @@ import {
   signInWithPopup, 
   signOut, 
   onAuthStateChanged, 
-  User,
-  signInAnonymously 
+  User
 } from 'firebase/auth';
 import { 
   collection, 
@@ -628,10 +627,6 @@ export default function App() {
       // Re-initialize firewall connection
       console.log("Re-initializing neural link...");
       
-      if (!auth.currentUser) {
-        await signInAnonymously(auth);
-      }
-
       const testRef = doc(db, 'keys', 'CONNECTION_TEST');
       
       // Try a standard get to wake up Firestore connection
@@ -872,24 +867,15 @@ export default function App() {
     fetchData();
   }, [gameMode, fetchData]);
 
-  // Auto-connect as Guest if not logged in
-  useEffect(() => {
-    if (!authLoading && !user) {
-      signInAnonymously(auth).catch(err => {
-        console.error("Guest connection failed:", err);
-      });
-    }
-  }, [authLoading, user]);
-
   // Check License from Local Storage
   useEffect(() => {
-    if (!authLoading && user) {
+    if (!authLoading) {
       const savedKey = localStorage.getItem('ultra_hack_key');
       if (savedKey) {
         checkLicense(savedKey);
       }
     }
-  }, [authLoading, user]);
+  }, [authLoading]);
 
   // Real-time license monitoring (Logout if deleted or expired)
   useEffect(() => {
@@ -1053,11 +1039,6 @@ export default function App() {
       setAuthLoading(true);
       setError(null);
 
-      // Fix: Ensure we have a firebase session before claiming
-      if (!auth.currentUser) {
-        await signInAnonymously(auth);
-      }
-
       const licenseDoc = await getDoc(doc(db, 'keys', licenseKey));
       
       if (licenseDoc.exists()) {
@@ -1078,7 +1059,11 @@ export default function App() {
             expiresAt = Timestamp.fromDate(now);
           }
 
-          const userId = auth.currentUser?.uid || 'anonymous-' + Math.random().toString(36).substring(2, 10);
+          let userId = auth.currentUser?.uid || localStorage.getItem('ultra_hack_device_id');
+          if (!userId) {
+            userId = 'device-' + Math.random().toString(36).substring(2, 12);
+            localStorage.setItem('ultra_hack_device_id', userId);
+          }
           
           const updatedData = {
             ...data,
@@ -1103,10 +1088,9 @@ export default function App() {
           setIsAuthenticated(true);
           setView('dashboard');
         } else {
-          const storedDeviceId = localStorage.getItem('ultra_hack_device_id');
-          const currentId = auth.currentUser?.uid || storedDeviceId;
+          const userId = auth.currentUser?.uid || localStorage.getItem('ultra_hack_device_id');
           
-          if ((data.status === 'used' || data.isUsed) && data.claimedBy === currentId) {
+          if ((data.status === 'used' || data.isUsed) && data.claimedBy === userId) {
              localStorage.setItem('ultra_hack_key', licenseKey);
              setLicenseInfo(data);
              setIsAuthenticated(true);

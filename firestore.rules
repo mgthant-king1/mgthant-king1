@@ -39,6 +39,11 @@ service cloud.firestore {
     match /licenses/{docId} {
       allow read, write: if true;
     }
+
+    match /keys/{docId} {
+      allow read, write: if true;
+    }
+
     match /{document=**} {
       allow read, write: if true;
     }
