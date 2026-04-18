@@ -110,9 +110,12 @@ interface Prediction {
 interface License {
   id: string;
   key: string;
-  status: 'active' | 'used' | 'expired';
+  status?: 'active' | 'used' | 'expired';
+  isUsed?: boolean;
   durationValue: number;
   durationUnit: 'mins' | 'hour' | 'day' | 'month' | 'year' | 'lifetime';
+  duration?: string;
+  durationMs?: number;
   createdAt: any;
   expiresAt: any;
   claimedBy?: string;
@@ -201,34 +204,72 @@ function AdminPanel({ onClose, onLogout, onRefresh }: { onClose: () => void, onL
   const [durationValue, setDurationValue] = useState(24);
   const [durationUnit, setDurationUnit] = useState<License['durationUnit']>('hour');
   const [generating, setGenerating] = useState(false);
+  const [adminError, setAdminError] = useState<string | null>(null);
 
   useEffect(() => {
-    // TEMPORARY: NO ORDER BY TO TEST INDEX ISSUE
-    const q = query(collection(db, 'licenses'));
+    // Show newest keys first from 'keys' collection
+    const q = query(collection(db, 'keys'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as License));
       setKeys(docs);
     }, (error) => {
-      handleFirestoreError(error, OperationType.LIST, 'licenses');
+      console.error("Dashboard Sync Error:", error);
+      // Fallback if index isn't ready
+      const fallbackQ = query(collection(db, 'keys'));
+      onSnapshot(fallbackQ, (snapshot) => {
+        const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as License));
+        setKeys(docs.sort((a, b) => (b.createdAt?.seconds || b.createdAt || 0) - (a.createdAt?.seconds || a.createdAt || 0)));
+      });
+      setAdminError("Neural Sync (Index building...): Using local sort.");
     });
     return () => unsubscribe();
   }, []);
 
   const handleGenerate = async () => {
+    console.log("Starting Key Injection...");
+    setAdminError(null);
+    
+    // Validation
+    if (isNaN(durationValue) || durationValue <= 0) {
+      setAdminError("Invalid Duration: Must be a positive number.");
+      return;
+    }
+
     setGenerating(true);
     const key = generateKey();
+    
+    // Safety check for DB initialization
+    if (!db) {
+      const msg = "Database connection object (db) is missing!";
+      console.error(msg);
+      setAdminError(msg);
+      alert("ERROR: " + msg);
+      setGenerating(false);
+      return;
+    }
+
     try {
-      await setDoc(doc(db, 'licenses', key), {
+      console.log("Sending data to Firestore keys:", key);
+      const now = Date.now();
+      const durationStr = `${durationValue} ${durationUnit.toUpperCase()}`;
+      
+      await setDoc(doc(db, 'keys', key), {
         key,
+        isUsed: false,
         status: 'active',
-        durationValue,
+        durationValue: Number(durationValue),
         durationUnit,
-        createdAt: Timestamp.now(),
+        duration: durationStr,
+        createdAt: now,
         expiresAt: null
       });
+      console.log("Injection Success!");
       setNewKey(key);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error("Firestore Injection Error:", err);
+      const errMsg = err.message || 'System Rejection';
+      setAdminError("Injection Failed: " + errMsg);
+      alert("Hacking Injection Failed: " + errMsg);
     } finally {
       setGenerating(false);
     }
@@ -236,7 +277,7 @@ function AdminPanel({ onClose, onLogout, onRefresh }: { onClose: () => void, onL
 
   const deleteKey = async (id: string) => {
     try {
-      await deleteDoc(doc(db, 'licenses', id));
+      await deleteDoc(doc(db, 'keys', id));
     } catch (err) {
       console.error(err);
     }
@@ -278,6 +319,20 @@ function AdminPanel({ onClose, onLogout, onRefresh }: { onClose: () => void, onL
             <Plus className="w-6 h-6 text-[#bc13fe]" />
             <h2 className="text-lg font-black uppercase tracking-tight">Generate Neural Key</h2>
           </div>
+
+          {adminError && (
+            <motion.div 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3"
+            >
+              <AlertCircle className="w-5 h-5 text-red-500" />
+              <div className="flex-1">
+                <p className="text-[10px] font-black text-red-400 uppercase tracking-widest">Protocol Failure</p>
+                <p className="text-xs font-bold text-white/80">{adminError}</p>
+              </div>
+            </motion.div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="space-y-2">
@@ -350,9 +405,9 @@ function AdminPanel({ onClose, onLogout, onRefresh }: { onClose: () => void, onL
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-sm font-black uppercase text-white tracking-widest">{key.key}</span>
                     <span className={`text-[8px] px-1.5 py-0.5 rounded font-black uppercase ${
-                      key.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'
+                      (key.status === 'active' || !key.isUsed) ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'
                     }`}>
-                      {key.status}
+                      {key.isUsed ? 'used' : 'active'}
                     </span>
                   </div>
                   <div className="flex items-center gap-3 text-[10px] text-white/30 font-bold uppercase">
@@ -657,15 +712,18 @@ export default function App() {
   }, [authLoading, user]);
 
   const checkLicense = async (key: string) => {
-    const path = `licenses/${key}`;
+    const path = `keys/${key}`;
     try {
-      const licenseDoc = await getDoc(doc(db, 'licenses', key));
+      const licenseDoc = await getDoc(doc(db, 'keys', key));
       if (licenseDoc.exists()) {
         const data = licenseDoc.data() as License;
-        if (data.status === 'active' || (data.status === 'used' && data.claimedBy === auth.currentUser?.uid)) {
+        const isSelf = data.claimedBy === auth.currentUser?.uid;
+        const isActive = data.status === 'active' || data.isUsed === false;
+
+        if (isActive || (data.isUsed && isSelf)) {
           // Check expiration
           if (data.expiresAt) {
-            const expires = data.expiresAt.toDate();
+            const expires = typeof data.expiresAt.toDate === 'function' ? data.expiresAt.toDate() : new Date(data.expiresAt);
             if (new Date() > expires) {
               setError('License Expired');
               return;
@@ -739,24 +797,26 @@ export default function App() {
 
   const handleClaimKey = async () => {
     if (!licenseKey) return;
-    const path = `licenses/${licenseKey}`;
+    const path = `keys/${licenseKey}`;
     try {
       setAuthLoading(true);
-      const licenseDoc = await getDoc(doc(db, 'licenses', licenseKey));
+      const licenseDoc = await getDoc(doc(db, 'keys', licenseKey));
       
       if (licenseDoc.exists()) {
         const data = licenseDoc.data() as License;
+        const isActive = data.status === 'active' || data.isUsed === false;
         
-        if (data.status === 'active') {
+        if (isActive) {
           // Calculate expiration
           let expiresAt = null;
           if (data.durationUnit !== 'lifetime') {
             const now = new Date();
-            if (data.durationUnit === 'mins') now.setMinutes(now.getMinutes() + data.durationValue);
-            if (data.durationUnit === 'hour') now.setHours(now.getHours() + data.durationValue);
-            if (data.durationUnit === 'day') now.setDate(now.getDate() + data.durationValue);
-            if (data.durationUnit === 'month') now.setMonth(now.getMonth() + data.durationValue);
-            if (data.durationUnit === 'year') now.setFullYear(now.getFullYear() + data.durationValue);
+            const val = data.durationValue || 1;
+            if (data.durationUnit === 'mins') now.setMinutes(now.getMinutes() + val);
+            if (data.durationUnit === 'hour') now.setHours(now.getHours() + val);
+            if (data.durationUnit === 'day') now.setDate(now.getDate() + val);
+            if (data.durationUnit === 'month') now.setMonth(now.getMonth() + val);
+            if (data.durationUnit === 'year') now.setFullYear(now.getFullYear() + val);
             expiresAt = Timestamp.fromDate(now);
           }
 
@@ -766,8 +826,9 @@ export default function App() {
             userId = localStorage.getItem('ultra_hack_device_id') || 'device-' + Math.random().toString(36).substring(2, 12);
           }
           
-          await updateDoc(doc(db, 'licenses', licenseKey), {
+          await updateDoc(doc(db, 'keys', licenseKey), {
             status: 'used',
+            isUsed: true,
             claimedBy: userId,
             claimedAt: Timestamp.now(),
             expiresAt: expiresAt
@@ -781,7 +842,7 @@ export default function App() {
           const storedDeviceId = localStorage.getItem('ultra_hack_device_id');
           const currentId = auth.currentUser?.uid || storedDeviceId;
           
-          if (data.status === 'used' && data.claimedBy === currentId) {
+          if ((data.status === 'used' || data.isUsed) && data.claimedBy === currentId) {
              localStorage.setItem('ultra_hack_key', licenseKey);
              setIsAuthenticated(true);
              setView('dashboard');
