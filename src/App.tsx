@@ -722,7 +722,15 @@ export default function App() {
         console.log('Login popup closed or cancelled by user');
       } else {
         console.error('Login Error:', err);
-        setError('Authentication failed. Please try again.');
+        let detail = 'Authentication failed.';
+        if (err.code === 'auth/unauthorized-domain') {
+          detail = 'Unauthorized Domain: Add "mgthant-king1.vercel.app" to Firebase Authorized Domains.';
+        } else if (err.code === 'auth/network-request-failed') {
+          detail = 'Network Error: Check your VPN or internet connection.';
+        } else {
+          detail = err.message || detail;
+        }
+        setError(detail + ' Please try again.');
       }
     } finally {
       setIsLoggingIn(false);
@@ -789,9 +797,11 @@ export default function App() {
     } catch (err: any) {
       console.error("Key Claim Error:", err);
       if (err.message?.includes('permission')) {
-        setError('Access Denied: Neural Firewall Blocked Connection');
+        setError('Access Denied: Neural Firewall Blocked Connection (Check Security Rules)');
+      } else if (err.message?.includes('not found')) {
+        setError('Database Error: Project connection failed.');
       } else {
-        setError('System Error: Unable to verify key');
+        setError('System Error: ' + (err.message || 'Verification failed'));
       }
     } finally {
       setAuthLoading(false);
