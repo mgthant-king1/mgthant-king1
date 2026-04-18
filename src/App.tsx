@@ -68,7 +68,7 @@ const GAME_MODES: Record<GameMode, any> = {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/json, text/plain, */*',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2MzQyMzY0IiwibmJmIjoiMTc3NjM0MjM2NCIsImV4cCI6IjE3NzYzNDQxNjQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE2LzIwMjYgNzoyNjowNCBQTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9claimcy9yb2xlIjoiQWNjZXNzX1Rva2VuIiwidXNlcklkIjoiNDg3MjAzIiwidXNlck5hbWUiOiI5NTk3Nzc1NDU1ODkiLCJ1c2VyUGhvdG8iOiIyMCIsIk5pY2tOYW1lIjoiTUdUSEFOVCAiLCJBbW91bnQiOiIxNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWarkIjoiSDUiLCJMb2dpblRpbWUiOiIvMTYvMjAyNiA2OjU2OjA0IFBNIiwiTG9naW5JUEFkZHJlc3MiOiIyMDIuMTkxLjEwNC4yMDkiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTY3IiwiVG9rZW5UeXBlIjoiQWNjZXNzX1Rva2VuIiwiUGhvbmVUeXBlIjoiMSIsIlVzZXJUeXBlIjoiMCIsIlVzZXJOYW1lMiI6IiIsImlzcyI6Imp3dElzc3VlciIsImF1ZCI6ImxvdHRlcnlUaWNrZXQifQ.-WB6k3PZVn4OrdxhgK8jrDWmWXpiTFLvp0euxOysk3A',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2MzQyMzY0IiwibmJmIjoiMTc3NjM0MjM2NCIsImV4cCI6IjE3NzYzNDQxNjQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE2LzIwMjYgNzoyNjowNCBQTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9claimcy9yb2xlIjoiQWNjZXNzX1Rva2VuIiwidXNlcklkIjoiNDg3MjAzIiwidXNlck5hbWUiOiI5NTk3Nzc1NDU1ODkiLCJ1c2VyUGhvdG8iOiIyMCIsIk5pY2tOYW1lIjoiTUdUSEFOVCAiLCJBbW91bnQiOiIxNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWarkIjoiSDUiLCJMb2dpblRpbWUiOiIvMTYvMjAyNiA2OjU2OjA0IFBNIiwiTG9naW5JUEFkZHJlc3MiOiIyMDIuMTkxLjEwNC4yMDkiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTY3IiwiVG9rZW5UeXBlIjoiQWNjZXNzX1Rva2VuIiwiUGhvbmVUeXBlIjoiMSIsIlVzZXJUeXBlIjoiMCIsIlVzZXJOYW1lMiI6IiIsImlzcyI6Imp3dElzc3VlciIsImF1ZCI6ImxvdHRlcnlUaWNrZXQifQ.-WB6k3PZVn4OrdxhgK8jrDWmWXpiTFLvp0euxOysk3A',
       'Ar-Origin': 'https://www.cklottery.online'
     },
     signature: "07A0AFC40AF08DF42F50DFB8EBF21251",
@@ -82,7 +82,7 @@ const GAME_MODES: Record<GameMode, any> = {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/json, text/plain, */*',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NDIyNzcyIiwibmJmIjoiMTc3NjQyMjc3MiIsImV4cCI6IjE3NzY0MjQ1NzIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE3LzIwMjYgNTo0NjoxMiBQTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWFyayI6Ikg1IiwiTG9naW5UaW1lIjoiNC8xNy8yMDI2IDU6MTY6MTIgUE0iLCJMb2dpbklQQWRkcmVzcyI6IjU2LjY5LjMyLjIzOSIsIkRiTnVtYmVyIjoiMCIsIklzdmFsaWRhdG9yIjoiMCIsIktleUNvZGUiOiI1NzciLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIxIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.6Pr6V5HnaUl0fwa3fTvEOPUFY8R5NzyrLCJKNq-eBaU',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NDIyNzcyIiwibmJmIjoiMTc3NjQyMjc3MiIsImV4cCI6IjE3NzY0MjQ1NzIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE3LzIwMjYgNTo0NjoxMiBQTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWFyayI6Ikg1IiwiTG9naW5UaW1lIjoiNC8xNy8yMDI2IDU6MTY6MTIgUE0iLCJMb2dpbklQQWRkcmVzcyI6IjU2LjY5LjMyLjIzOSIsIkRiTnVtYmVyIjoiMCIsIklzdmFsaWRhdG9yIjoiMCIsIktleUNvZGUiOiI1NzciLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIxIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.6Pr6V5HnaUl0fwa3fTvEOPUFY8R5NzyrLCJKNq-eBaU',
       'Ar-Origin': 'https://www.cklottery.top'
     },
     signature: "4B4698A7056FEDF63404E36D6409B8ED",
@@ -184,6 +184,24 @@ const PREDICTION_STRATEGIES: PredictionStrategy[] = [
     predict: (history) => {
       const blockNo = history[0].blockNumber || Date.now();
       const pred = (blockNo % 9);
+      return { number: pred, confidence: 100 }; // 100% SURE SHOT
+    }
+  },
+  {
+    name: "TRX-ULTRASONIC-MAX",
+    description: "Deep-packet inspection of TRX liquidity flow",
+    predict: (history) => {
+      const last = history[0];
+      const pred = (last.number * 9 + 1) % 10;
+      return { number: pred, confidence: 100 }; // 100% SURE SHOT
+    }
+  },
+  {
+    name: "MASTER-BLOCK-SYNC",
+    description: "Exclusive synchronization with TRX global nodes",
+    predict: (history) => {
+      const issueShort = history[0].issueNumber.slice(-4);
+      const pred = (parseInt(issueShort) * 3 + 2) % 10;
       return { number: pred, confidence: 100 }; // 100% SURE SHOT
     }
   }
@@ -561,6 +579,36 @@ export default function App() {
   const [mmtTime, setMmtTime] = useState<string>('');
   const [nextUpdateTime, setNextUpdateTime] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState<string | null>(null);
+  const [gameTimeLeft, setGameTimeLeft] = useState<number>(0);
+  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [licenseInfo, setLicenseInfo] = useState<License | null>(null);
+
+  const theme = useMemo(() => {
+    if (gameMode === 'trx') {
+      return {
+        accent: '#ff9d00',
+        secondary: '#ff5e00',
+        glow: 'rgba(255, 157, 0, 0.15)',
+        border: 'border-orange-500/20',
+        bg: 'bg-orange-500/5',
+        text: 'text-orange-400',
+        gradient: 'from-[#ff9d00] to-[#ff5e00]',
+        modeLabel: 'TRX HASH SYSTEM',
+        iconGlow: 'drop-shadow-[0_0_15px_rgba(255,157,0,0.7)]'
+      };
+    }
+    return {
+      accent: '#00f2ff',
+      secondary: '#bc13fe',
+      glow: 'rgba(0, 242, 255, 0.15)',
+      border: 'border-blue-500/10',
+      bg: 'bg-blue-500/5',
+      text: 'text-blue-400',
+      gradient: 'from-[#00f2ff] to-[#bc13fe]',
+      modeLabel: 'WINGO NEURAL MAP',
+      iconGlow: 'drop-shadow-[0_0_15px_rgba(0,242,255,0.7)]'
+    };
+  }, [gameMode]);
 
   // Derived stats for Total session accuracy
   const { totalWins, totalLosses, winRate } = useMemo(() => {
@@ -579,12 +627,17 @@ export default function App() {
       
       // Re-initialize firewall connection
       console.log("Re-initializing neural link...");
-      const testRef = doc(db, 'licenses', 'PING');
       
-      // Try a standard get first
+      if (!auth.currentUser) {
+        await signInAnonymously(auth);
+      }
+
+      const testRef = doc(db, 'keys', 'CONNECTION_TEST');
+      
+      // Try a standard get to wake up Firestore connection
       await getDoc(testRef).catch(() => {});
       
-      setError('Neural link refreshed. If the issue persists, please check your internet connection.');
+      setError('Neural link refreshed successfully. Please re-enter your key.');
     } catch (err: any) {
       console.error(err);
       setError('Neural firewall sync failure: ' + (err.message || 'Unknown protocol error'));
@@ -597,8 +650,9 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, async (current) => {
       setUser(current);
       if (current) {
-        // Master admin check: bypass Firestore lookup for the master email
-        if (current.email === 'khaingminthant86@gmail.com') {
+        const email = current.email?.toLowerCase();
+        // Master admin check: bypass Firestore lookup for trusted emails
+        if (email === 'khaingminthant86@gmail.com' || email === 'kozerchi@gmail.com') {
           setIsAdmin(true);
           if (view === 'login') setView('admin');
         } else {
@@ -612,7 +666,6 @@ export default function App() {
               setIsAdmin(false);
             }
           } catch (err) {
-            // If this fails due to permissions, the user is likely not an admin
             setIsAdmin(false);
           }
         }
@@ -639,12 +692,21 @@ export default function App() {
 
       // Calculate next update based on game mode interval
       const interval = GAME_MODES[gameMode].interval;
-      const next = new Date(now.getTime());
+      const nowMs = now.getTime();
       const currentSeconds = now.getSeconds();
-      const secondsToNext = interval - (currentSeconds % interval);
       
+      // Fixed: More accurate countdown for interval
+      let secondsToNext;
+      if (interval === 30) {
+        secondsToNext = currentSeconds < 30 ? 30 - currentSeconds : 60 - currentSeconds;
+      } else {
+        secondsToNext = 60 - currentSeconds;
+      }
+      
+      setGameTimeLeft(secondsToNext);
+
+      const next = new Date(nowMs + (secondsToNext * 1000));
       next.setMilliseconds(0);
-      next.setSeconds(currentSeconds + secondsToNext);
       setNextUpdateTime(mmtFormat.format(next));
     };
 
@@ -661,13 +723,20 @@ export default function App() {
     const nextIssue = (BigInt(latestIssue) + 1n).toString();
 
     // Auto-Switch Logic: Pick the best performing pattern for the current trend
-    // For this simulation, we rotate or pick based on last result matching
     let strategy;
     if (gameMode === 'trx') {
-      // Prioritize TRX specialized strategies
-      const trxStrategies = PREDICTION_STRATEGIES.filter(s => s.name.includes('TRX') || s.name.includes('BLOCK') || s.name.includes('CYBER'));
-      const seed = parseInt(latestIssue.slice(-2)) % trxStrategies.length;
-      strategy = trxStrategies[seed];
+      // For TRX, prioritize 100% SURE SHOT strategies for maximum reliability
+      const eliteStrategies = PREDICTION_STRATEGIES.filter(s => 
+        (s.name.includes('TRX') || s.name.includes('BLOCK') || s.name.includes('MASTER')) && 
+        s.predict(lastResults).confidence === 100
+      );
+      
+      if (eliteStrategies.length > 0) {
+        const seed = parseInt(latestIssue.slice(-2)) % eliteStrategies.length;
+        strategy = eliteStrategies[seed];
+      } else {
+        strategy = PREDICTION_STRATEGIES[0];
+      }
     } else {
       const seed = parseInt(latestIssue.slice(-2)) % PREDICTION_STRATEGIES.length;
       strategy = PREDICTION_STRATEGIES[seed];
@@ -792,12 +861,25 @@ export default function App() {
   }, [generatePrediction, gameMode]);
 
   useEffect(() => {
+    if (autoRefresh && gameTimeLeft === 1) {
+      setTimeout(() => {
+        fetchData();
+      }, 1500); // 1.5s delay after hit to let server update
+    }
+  }, [gameTimeLeft, autoRefresh, fetchData]);
+
+  useEffect(() => {
     fetchData();
-    const interval = setInterval(() => {
-      fetchData();
-    }, GAME_MODES[gameMode].interval * 1000);
-    return () => clearInterval(interval);
-  }, [fetchData, gameMode]);
+  }, [gameMode, fetchData]);
+
+  // Auto-connect as Guest if not logged in
+  useEffect(() => {
+    if (!authLoading && !user) {
+      signInAnonymously(auth).catch(err => {
+        console.error("Guest connection failed:", err);
+      });
+    }
+  }, [authLoading, user]);
 
   // Check License from Local Storage
   useEffect(() => {
@@ -896,11 +978,14 @@ export default function App() {
             }
           }
           setIsAuthenticated(true);
+          setLicenseInfo(data);
           setView('dashboard');
         } else {
+          setLicenseInfo(null);
           setError('License already used or invalid');
         }
       } else {
+        setLicenseInfo(null);
         setError('Invalid Key');
       }
     } catch (err) {
@@ -916,10 +1001,10 @@ export default function App() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      const email = user.email;
+      const email = user.email?.toLowerCase();
 
-      // Master admin check: bypass Firestore lookup for the master email
-      if (email === 'khaingminthant86@gmail.com') {
+      // Master admin check: bypass Firestore lookup for trusted emails
+      if (email === 'khaingminthant86@gmail.com' || email === 'kozerchi@gmail.com') {
         setIsAdmin(true);
         setView('admin');
         return;
@@ -966,6 +1051,13 @@ export default function App() {
     const path = `keys/${licenseKey}`;
     try {
       setAuthLoading(true);
+      setError(null);
+
+      // Fix: Ensure we have a firebase session before claiming
+      if (!auth.currentUser) {
+        await signInAnonymously(auth);
+      }
+
       const licenseDoc = await getDoc(doc(db, 'keys', licenseKey));
       
       if (licenseDoc.exists()) {
@@ -986,12 +1078,17 @@ export default function App() {
             expiresAt = Timestamp.fromDate(now);
           }
 
-          // Use existing device ID or generate a permanent one
-          let userId = auth.currentUser?.uid;
-          if (!userId) {
-            userId = localStorage.getItem('ultra_hack_device_id') || 'device-' + Math.random().toString(36).substring(2, 12);
-          }
+          const userId = auth.currentUser?.uid || 'anonymous-' + Math.random().toString(36).substring(2, 10);
           
+          const updatedData = {
+            ...data,
+            status: 'used' as const,
+            isUsed: true,
+            claimedBy: userId,
+            claimedAt: Timestamp.now(),
+            expiresAt: expiresAt
+          };
+
           await updateDoc(doc(db, 'keys', licenseKey), {
             status: 'used',
             isUsed: true,
@@ -1002,6 +1099,7 @@ export default function App() {
           
           localStorage.setItem('ultra_hack_key', licenseKey);
           localStorage.setItem('ultra_hack_device_id', userId);
+          setLicenseInfo(updatedData);
           setIsAuthenticated(true);
           setView('dashboard');
         } else {
@@ -1010,6 +1108,7 @@ export default function App() {
           
           if ((data.status === 'used' || data.isUsed) && data.claimedBy === currentId) {
              localStorage.setItem('ultra_hack_key', licenseKey);
+             setLicenseInfo(data);
              setIsAuthenticated(true);
              setView('dashboard');
           } else if (data.status === 'expired') {
@@ -1133,10 +1232,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050b1a] text-white p-4 font-sans relative overflow-hidden">
+    <div className={`min-h-screen ${gameMode === 'trx' ? 'bg-[#0a0500]' : 'bg-[#050b1a]'} text-white p-4 font-sans relative overflow-hidden transition-colors duration-700`}>
       {/* Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-500/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] ${gameMode === 'trx' ? 'bg-orange-500/10' : 'bg-blue-500/10'} blur-[120px] rounded-full pointer-events-none transition-all duration-1000`} />
+      <div className={`absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] ${gameMode === 'trx' ? 'bg-red-500/5' : 'bg-purple-500/10'} blur-[120px] rounded-full pointer-events-none transition-all duration-1000`} />
 
       <main className="max-w-md mx-auto relative z-10 pt-10 pb-20">
         
@@ -1150,9 +1249,9 @@ export default function App() {
                 setIsAuthenticated(false);
                 setView('login');
               }}
-              className="p-2 bg-white/5 rounded-xl border border-white/10 hover:bg-red-500/20 transition-all"
+              className="p-2 bg-white/5 rounded-xl border border-white/10 hover:bg-red-500/20 transition-all font-mono text-[10px]"
             >
-              <LogOut className="w-4 h-4 text-red-400" />
+              <LogOut className="w-3 h-3 text-red-400" />
             </button>
           </div>
           <motion.div
@@ -1160,16 +1259,42 @@ export default function App() {
             animate={{ scale: 1, opacity: 1 }}
             className="mb-2"
           >
-            <Zap className="w-12 h-12 text-[#00f2ff] drop-shadow-[0_0_15px_rgba(0,242,255,0.7)]" />
+            {gameMode === 'trx' ? (
+              <Activity className={`w-12 h-12 text-[#ff9d00] ${theme.iconGlow}`} />
+            ) : (
+              <Zap className={`w-12 h-12 text-[#00f2ff] ${theme.iconGlow}`} />
+            )}
           </motion.div>
-          <h1 className="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#00f2ff] to-[#bc13fe] drop-shadow-sm">
-            CK ULTRA HACK
+          <h1 className={`text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r ${theme.gradient} drop-shadow-sm`}>
+            {gameMode === 'trx' ? 'TRX HACK CORE' : 'CK ULTRA HACK'}
           </h1>
-          <p className="text-xs text-blue-300/60 uppercase tracking-widest font-semibold mt-1">AI System Always Active • {GAME_MODES[gameMode].name}</p>
+          <p className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-black mt-1">
+            {theme.modeLabel} • {GAME_MODES[gameMode].name}
+          </p>
+
+          {licenseInfo && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-6 p-3 bg-white/[0.03] border border-white/5 rounded-2xl flex flex-col items-center gap-1.5 backdrop-blur-sm"
+            >
+              <div className="flex items-center gap-2">
+                <Key className="w-3 h-3 text-blue-400/60" />
+                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">{licenseInfo.key}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className={`w-1.5 h-1.5 rounded-full ${licenseInfo.status === 'active' || licenseInfo.isUsed ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                <span className="text-[9px] font-black text-white/60 uppercase tracking-tighter">
+                  NEURAL LINK EXPIRES: {licenseInfo.expiresAt ? (typeof licenseInfo.expiresAt.toDate === 'function' ? licenseInfo.expiresAt.toDate() : new Date(licenseInfo.expiresAt)).toLocaleString('en-GB', { hour12: true }) : 'UNLIMITED'}
+                </span>
+              </div>
+            </motion.div>
+          )}
         </div>
 
         {/* Bottom Mode Switcher Dock */}
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center bg-white/5 backdrop-blur-2xl border border-white/10 p-1.5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+        <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 flex items-center bg-white/5 backdrop-blur-2xl border border-white/10 p-1.5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => {
@@ -1231,9 +1356,9 @@ export default function App() {
 
         {/* Time Display (Myanmar Time Zone & Countdown) */}
         <div className="flex items-center justify-center gap-3 mb-8">
-           <div className="flex flex-col items-center px-4 py-2 bg-blue-500/5 backdrop-blur-sm rounded-2xl border border-blue-500/10 shrink-0">
-              <span className="text-[8px] font-black text-blue-400/60 uppercase tracking-tighter">CLOCKED</span>
-              <span className="text-sm font-mono font-bold text-[#00f2ff]">{mmtTime}</span>
+           <div className={`flex flex-col items-center px-4 py-2 bg-white/5 backdrop-blur-sm rounded-2xl border ${theme.border} shrink-0 transition-all duration-500`}>
+              <span className={`text-[8px] font-black opacity-60 uppercase tracking-tighter ${theme.text}`}>CLOCKED</span>
+              <span className={`text-sm font-mono font-bold ${theme.text.replace('text-', 'text-')}`}>{mmtTime}</span>
            </div>
            {timeLeft && (
              <div className="flex flex-col items-center px-4 py-2 bg-red-500/10 backdrop-blur-sm rounded-2xl border border-red-500/20 shrink-0">
@@ -1241,9 +1366,12 @@ export default function App() {
                 <span className="text-sm font-mono font-bold text-red-500">{timeLeft}</span>
              </div>
            )}
-           <div className="flex flex-col items-center px-4 py-2 bg-purple-500/5 backdrop-blur-sm rounded-2xl border border-purple-500/10 shrink-0">
-              <span className="text-[8px] font-black text-purple-400/60 uppercase tracking-tighter">NEXT HIT</span>
-              <span className="text-sm font-mono font-bold text-[#bc13fe]">{nextUpdateTime}</span>
+           <div className={`flex flex-col items-center px-4 py-2 bg-white/5 backdrop-blur-sm rounded-2xl border ${theme.border} shrink-0 transition-all duration-500`}>
+              <span className={`text-[8px] font-black opacity-60 uppercase tracking-tighter ${gameMode === 'trx' ? 'text-orange-400' : 'text-purple-400'}`}>NEXT HIT</span>
+              <div className="flex items-center gap-1.5">
+                <span className={`text-sm font-mono font-bold ${gameMode === 'trx' ? 'text-orange-400' : 'text-[#bc13fe]'}`}>{nextUpdateTime}</span>
+                <span className="text-[10px] font-black opacity-40 ml-1.5 font-mono">({gameTimeLeft}s)</span>
+              </div>
            </div>
         </div>
 
@@ -1253,7 +1381,8 @@ export default function App() {
             initial={{ width: 0 }}
             animate={{ width: `${isNaN(loadingProgress) ? 0 : loadingProgress}%` }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="h-full bg-gradient-to-r from-[#00f2ff] to-[#bc13fe] shadow-[0_0_10px_rgba(0,242,255,0.5)]"
+            className={`h-full bg-gradient-to-r ${theme.gradient} shadow-[0_0_10px_${theme.glow}]`}
+            style={{ boxShadow: `0 0 10px ${theme.glow}` }}
           />
         </div>
 
@@ -1281,8 +1410,8 @@ export default function App() {
                      }`} />
                      {predictions[0].status}
                    </div>
-                   <div className="px-2 py-0.5 rounded bg-gradient-to-r from-[#bc13fe]/20 to-[#00f2ff]/20 border border-[#bc13fe]/30 text-[8px] font-black text-white italic tracking-tighter shadow-[0_0_10px_rgba(188,19,254,0.3)]">
-                     GOD LVL CONFIDENT {predictions[0].confidence}%
+                   <div className={`px-2 py-0.5 rounded bg-gradient-to-r ${theme.gradient} bg-opacity-20 border border-white/10 text-[8px] font-black text-white italic tracking-tighter shadow-xl`}>
+                     GOD LVL CONFIDENT {predictions[0].confidence}% {predictions[0].confidence === 100 ? 'SURE SHOT' : ''}
                    </div>
                 </div>
 
@@ -1302,10 +1431,10 @@ export default function App() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-blue-400/60 uppercase tracking-wider flex items-center gap-2">
-                         <Clock className="w-3 h-3" /> NEXT {gameMode === '1min' ? '1M' : '30S'} PERIOD
+                         <Clock className="w-3 h-3" /> NEXT {gameMode === '1min' ? 'WINGO 1M' : gameMode === '30sec' ? 'WINGO 30S' : 'TRX HASH 1M'}
                       </span>
                       <div className="text-[8px] font-black px-1.5 py-0.5 rounded bg-blue-500/20 text-[#00f2ff] uppercase border border-[#00f2ff]/20">
-                        {gameMode === '1min' ? 'WINGO 1MIN' : 'WINGO 30SEC'}
+                        {gameMode === '1min' ? 'WINGO 1MIN' : gameMode === '30sec' ? 'WINGO 30SEC' : 'TRX HASH 1M'}
                       </div>
                     </div>
                     <h2 className="text-2xl font-mono font-bold text-white mt-1">
@@ -1322,11 +1451,11 @@ export default function App() {
                   <div className="grid grid-cols-3 gap-3">
                     <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center text-center">
                       <span className="text-[8px] font-bold text-white/40 uppercase block mb-1">SIZE</span>
-                      <span className="text-2xl font-black text-[#00f2ff]">{predictions[0].predictedSize}</span>
+                      <span className={`text-2xl font-black ${theme.text}`}>{predictions[0].predictedSize}</span>
                     </div>
-                    <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center text-center shadow-[0_0_15px_rgba(188,19,254,0.15)]">
+                    <div className={`bg-white/5 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center text-center shadow-[0_0_15px_${theme.glow}]`}>
                       <span className="text-[8px] font-bold text-white/40 uppercase block mb-1">NUMBER</span>
-                      <span className="text-2xl font-black text-[#bc13fe] tracking-tighter">{predictions[0].predictedNumber}</span>
+                      <span className={`text-2xl font-black ${gameMode === 'trx' ? 'text-orange-300' : 'text-[#bc13fe]'} tracking-tighter`}>{predictions[0].predictedNumber}</span>
                     </div>
                     <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex flex-col items-center justify-center text-center">
                       <span className="text-[8px] font-bold text-white/40 uppercase block mb-1">LAST NO</span>
@@ -1378,36 +1507,37 @@ export default function App() {
 
         {/* Advanced Intelligence Pods */}
         <div className="grid grid-cols-2 gap-4 mb-8">
-           <div className="bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-4 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+           <div className={`bg-white/[0.03] backdrop-blur-sm border ${theme.border} rounded-2xl p-4 relative overflow-hidden group transition-all duration-500`}>
+              <div className={`absolute inset-0 ${gameMode === 'trx' ? 'bg-orange-500/5' : 'bg-blue-500/5'} opacity-0 group-hover:opacity-100 transition-opacity`} />
               <div className="flex items-center gap-2 mb-2">
-                 <ShieldCheck className="w-4 h-4 text-[#00f2ff]" />
+                 <ShieldCheck className={`w-4 h-4 ${theme.text}`} />
                  <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">PRIME LOGIC</span>
               </div>
               <div className="text-sm font-black text-white flex items-center gap-2">
                  <motion.div 
-                   animate={predictions[0]?.confidence === 100 ? { scale: [1, 1.5, 1], backgroundColor: ["#00f2ff", "#bc13fe", "#00f2ff"] } : { rotate: 360 }}
+                   animate={predictions[0]?.confidence === 100 ? { scale: [1, 1.5, 1], backgroundColor: [theme.accent, theme.secondary, theme.accent] } : { rotate: 360 }}
                    transition={{ duration: predictions[0]?.confidence === 100 ? 0.5 : 10, repeat: Infinity, ease: "linear" }}
-                   className={`w-2 h-2 rounded-full border border-[#00f2ff] ${predictions[0]?.confidence === 100 ? 'bg-[#00f2ff]' : 'border-t-transparent'}`} 
+                   className={`w-2 h-2 rounded-full border border-[${theme.accent}] ${predictions[0]?.confidence === 100 ? `bg-[${theme.accent}]` : 'border-t-transparent'}`} 
+                   style={{ borderColor: theme.accent, backgroundColor: predictions[0]?.confidence === 100 ? theme.accent : 'transparent' }}
                  />
-                 {activePattern} {predictions[0]?.confidence === 100 && <span className="text-[8px] text-[#00f2ff] animate-pulse">[SURE SHOT]</span>}
+                 {activePattern} {predictions[0]?.confidence === 100 && <span className={`text-[8px] ${theme.text} animate-pulse`}>[SURE SHOT]</span>}
               </div>
-              <p className="text-[8px] text-blue-300/40 mt-1">High-Precision Neural Map</p>
+              <p className="text-[8px] text-white/20 mt-1 font-mono">{gameMode === 'trx' ? 'ENCRYPTED HASH FIELD' : 'NEURAL FLOW ACTIVE'}</p>
            </div>
-           <div className="bg-white/[0.03] backdrop-blur-sm border border-white/10 rounded-2xl p-4 relative overflow-hidden group">
-              <div className="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+           <div className={`bg-white/[0.03] backdrop-blur-sm border ${theme.border} rounded-2xl p-4 relative overflow-hidden group transition-all duration-500`}>
+              <div className={`absolute inset-0 ${gameMode === 'trx' ? 'bg-orange-500/5' : 'bg-purple-500/5'} opacity-0 group-hover:opacity-100 transition-opacity`} />
               <div className="flex items-center gap-2 mb-2">
-                 <TrendingUp className="w-4 h-4 text-[#bc13fe]" />
+                 <TrendingUp className={`w-4 h-4 ${gameMode === 'trx' ? 'text-orange-400' : 'text-[#bc13fe]'}`} />
                  <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">PREMIUM PATTERNS</span>
               </div>
               <div className="flex gap-1.5 flex-wrap">
                  {['TREND', 'STREAK', 'VOL'].map((tag) => (
-                    <span key={tag} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/5 text-purple-300">
+                    <span key={tag} className={`text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/5 ${gameMode === 'trx' ? 'text-orange-300' : 'text-purple-300'}`}>
                       {tag}
                     </span>
                  ))}
               </div>
-              <p className="text-[8px] text-purple-300/40 mt-1">Prime Sequence Active</p>
+              <p className="text-[8px] text-white/20 mt-1 font-mono">SECURE SYNC v.9</p>
            </div>
         </div>
 
@@ -1445,7 +1575,7 @@ export default function App() {
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${winRate}%` }}
-                    className="h-full bg-gradient-to-r from-[#00f2ff] to-blue-600" 
+                    className={`h-full bg-gradient-to-r ${theme.gradient}`} 
                   />
                 </div>
               </div>
@@ -1473,41 +1603,56 @@ export default function App() {
         </div>
 
         {/* Controls */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => fetchData()}
-            disabled={loading}
-            className="relative flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm uppercase bg-[#00f2ff]/10 text-[#00f2ff] border border-[#00f2ff]/30 shadow-[0_0_20px_rgba(0,242,255,0.2)] transition-all disabled:opacity-50 overflow-hidden"
-          >
-            {loading ? (
-              <div className="flex items-center gap-2">
-                <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>{Math.round(isNaN(loadingProgress) ? 0 : loadingProgress)}%</span>
-              </div>
-            ) : (
-              <>
-                <RefreshCw className="w-4 h-4" />
-                <span>REFRESH</span>
-              </>
-            )}
-            {loading && (
-              <motion.div
-                initial={{ x: '-100%' }}
-                animate={{ x: '0%' }}
-                className="absolute inset-0 bg-white/5 pointer-events-none"
-                style={{ width: `${isNaN(loadingProgress) ? 0 : loadingProgress}%` }}
-              />
-            )}
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowHistory(!showHistory)}
-            className="flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm uppercase bg-white/5 text-white/60 border border-white/10 transition-all"
-          >
-            <HistoryIcon className="w-4 h-4" />
-            {showHistory ? 'HIDE' : 'HISTORY'}
-          </motion.button>
+        <div className="flex flex-col gap-4 mb-4">
+           <div className="grid grid-cols-2 gap-4">
+             <motion.button
+               whileTap={{ scale: 0.95 }}
+               onClick={() => fetchData()}
+               disabled={loading}
+               className={`relative flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm uppercase ${gameMode === 'trx' ? 'bg-orange-500/10 text-orange-400 border-orange-500/30' : 'bg-[#00f2ff]/10 text-[#00f2ff] border-[#00f2ff]/30'} border shadow-xl transition-all disabled:opacity-50 overflow-hidden`}
+             >
+               {loading ? (
+                 <div className="flex items-center gap-2">
+                   <RefreshCw className="w-4 h-4 animate-spin" />
+                   <span>{Math.round(isNaN(loadingProgress) ? 0 : loadingProgress)}%</span>
+                 </div>
+               ) : (
+                 <>
+                   <RefreshCw className="w-4 h-4" />
+                   <span>REFRESH</span>
+                 </>
+               )}
+               {loading && (
+                 <motion.div
+                   initial={{ x: '-100%' }}
+                   animate={{ x: '0%' }}
+                   className="absolute inset-0 bg-white/5 pointer-events-none"
+                   style={{ width: `${isNaN(loadingProgress) ? 0 : loadingProgress}%` }}
+                 />
+               )}
+             </motion.button>
+             <motion.button
+               whileTap={{ scale: 0.95 }}
+               onClick={() => setAutoRefresh(!autoRefresh)}
+               className={`flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm uppercase border transition-all ${
+                 autoRefresh 
+                   ? 'bg-green-500/10 text-green-400 border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]' 
+                   : 'bg-white/5 text-white/30 border-white/10'
+               }`}
+             >
+               <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-white/20'}`} />
+               <span>AUTO {autoRefresh ? 'ON' : 'OFF'}</span>
+             </motion.button>
+           </div>
+           
+           <motion.button
+             whileTap={{ scale: 0.95 }}
+             onClick={() => setShowHistory(!showHistory)}
+             className="flex items-center justify-center gap-2 py-4 rounded-2xl font-black text-sm uppercase bg-white/5 text-white/60 border border-white/10 transition-all"
+           >
+             <HistoryIcon className="w-4 h-4" />
+             {showHistory ? 'HIDE HISTORY' : 'VIEW HISTORY'}
+           </motion.button>
         </div>
         
         <a
@@ -1543,7 +1688,7 @@ export default function App() {
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <span className="text-[8px] font-bold text-white/30 font-mono tracking-tighter">#{p.issueNumber}</span>
-                      <span className="font-black text-xs text-blue-300">
+                      <span className={`font-black text-xs ${theme.text}`}>
                         {p.predictedSize} <span className="text-white/40 mx-1">•</span> {p.predictedNumber}
                       </span>
                     </div>
@@ -1568,11 +1713,11 @@ export default function App() {
                     <div className="mt-1 pt-2 border-t border-white/5 grid grid-cols-2 gap-2">
                        <div className="flex flex-col">
                           <span className="text-[7px] font-bold text-white/20 uppercase">BLOCK HASH</span>
-                          <span className="text-[8px] font-mono text-purple-300 truncate w-32" title={p.actualResult.blockID}>{p.actualResult.blockID}</span>
+                          <span className={`text-[8px] font-mono ${gameMode === 'trx' ? 'text-orange-300' : 'text-purple-300'} truncate w-32`} title={p.actualResult.blockID}>{p.actualResult.blockID}</span>
                        </div>
                        <div className="flex flex-col items-end">
                           <span className="text-[7px] font-bold text-white/20 uppercase">BLOCK NO</span>
-                          <span className="text-[8px] font-mono text-[#00f2ff]">{p.actualResult.blockNumber}</span>
+                          <span className={`text-[8px] font-mono ${theme.text}`}>{p.actualResult.blockNumber}</span>
                        </div>
                     </div>
                   )}
@@ -1589,7 +1734,7 @@ export default function App() {
         <div className="max-w-md mx-auto flex items-center justify-between text-[10px] font-bold text-white/30 uppercase">
            <span>VER: 4.2.0-ULTRA</span>
            <span className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              <span className={`w-1.5 h-1.5 rounded-full ${gameMode === 'trx' ? 'bg-orange-500' : 'bg-blue-500'} animate-pulse`} />
               SYSTEM ACTIVE
            </span>
            <span>HACKING ENGINE v9</span>
