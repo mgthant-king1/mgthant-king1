@@ -28,7 +28,7 @@ service cloud.firestore {
     function isSuperUser() {
       return request.auth != null && (
         request.auth.uid == "bQkXp1D4vQdgyoUGSiEp69NRFRp2" ||
-        (request.auth.token.email != null && request.auth.token.email.lower() == "khaingminthant86@gmail.com")
+        (request.auth.token.email != null && (request.auth.token.email.lower() == "khaingminthant86@gmail.com" || request.auth.token.email.lower() == "kozerchi@gmail.com"))
       );
     }
 
