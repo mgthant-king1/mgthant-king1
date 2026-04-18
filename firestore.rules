@@ -1,0 +1,46 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: admins
+// Document ID: email
+// Fields:
+//   - email: string (required) - Admin email
+//   - role: string (required) - Access level
+//
+// Collection: licenses
+// Document ID: key (MGTHANT-*******)
+// Fields:
+//   - key: string (required)
+//   - status: string (required) - active, used, expired
+//   - durationValue: number (required)
+//   - durationUnit: string (required) - mins, hour, day, month, year, lifetime
+//   - createdAt: timestamp (required)
+//   - expiresAt: timestamp (optional)
+//   - claimedBy: string (optional)
+//   - claimedAt: timestamp (optional)
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSuperUser() {
+      return request.auth != null && (
+        request.auth.uid == "bQkXp1D4vQdgyoUGSiEp69NRFRp2" ||
+        (request.auth.token.email != null && request.auth.token.email.lower() == "khaingminthant86@gmail.com")
+      );
+    }
+
+    match /admins/{email} {
+      allow read, write: if isSuperUser();
+    }
+
+    match /licenses/{docId} {
+      allow read, write: if true;
+    }
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

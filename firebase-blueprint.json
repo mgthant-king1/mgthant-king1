@@ -1,0 +1,40 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "System administrators with access to key management.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "description": "Admin email address" },
+        "role": { "type": "string", "enum": ["super", "admin"], "description": "Access level" }
+      },
+      "required": ["email", "role"]
+    },
+    "License": {
+      "title": "License",
+      "description": "Access keys generated for users.",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string", "description": "The generated key (MGTHANT-*******)" },
+        "status": { "type": "string", "enum": ["active", "used", "expired"], "description": "Current status" },
+        "durationValue": { "type": "number", "description": "Numeric duration" },
+        "durationUnit": { "type": "string", "enum": ["mins", "hour", "day", "month", "year", "lifetime"], "description": "Unit of time" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the key was created" },
+        "expiresAt": { "type": "string", "format": "date-time", "description": "When the key expires (null if lifetime)" },
+        "claimedBy": { "type": "string", "description": "UID of the user who used the key" },
+        "claimedAt": { "type": "string", "format": "date-time", "description": "When the key was used" }
+      },
+      "required": ["key", "status", "durationValue", "durationUnit", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{email}": {
+      "schema": "Admin",
+      "description": "Whitelist for administrators"
+    },
+    "/licenses/{key}": {
+      "schema": "License",
+      "description": "Database of generated licenses"
+    }
+  }
+}
