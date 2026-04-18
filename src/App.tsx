@@ -522,6 +522,7 @@ export default function App() {
   const [activePattern, setActivePattern] = useState('DELTA-9');
   const [mmtTime, setMmtTime] = useState<string>('');
   const [nextUpdateTime, setNextUpdateTime] = useState<string>('');
+  const [timeLeft, setTimeLeft] = useState<string | null>(null);
 
   // Derived stats for Total session accuracy
   const { totalWins, totalLosses, winRate } = useMemo(() => {
@@ -751,30 +752,71 @@ export default function App() {
     }
   }, [authLoading, user]);
 
-  // Real-time license monitoring (Logout if deleted)
+  // Real-time license monitoring (Logout if deleted or expired)
   useEffect(() => {
     const savedKey = localStorage.getItem('ultra_hack_key');
     if (isAuthenticated && savedKey && view === 'dashboard') {
+      let expiryTimer: any = null;
+      let countdownInterval: any = null;
+
+      const performLogout = (reason: string) => {
+        setIsAuthenticated(false);
+        setView('login');
+        setError(reason);
+        localStorage.removeItem('ultra_hack_key');
+        if (countdownInterval) clearInterval(countdownInterval);
+      };
+
       const unsubscribe = onSnapshot(doc(db, 'keys', savedKey), (snapshot) => {
         if (!snapshot.exists()) {
-          console.log("License was deleted by system administrator.");
-          setIsAuthenticated(false);
-          setView('login');
-          setError("Your session has been terminated by administrator.");
-          localStorage.removeItem('ultra_hack_key');
-        } else {
-          const data = snapshot.data() as License;
-          if (data.status === 'expired') {
-            setIsAuthenticated(false);
-            setView('login');
-            setError("Your session has expired.");
-            localStorage.removeItem('ultra_hack_key');
-          }
+          performLogout("Your session has been terminated by administrator.");
+          return;
+        }
+
+        const data = snapshot.data() as License;
+        
+        if (data.status === 'expired') {
+          performLogout("Your session has expired.");
+          return;
+        }
+
+        if (data.expiresAt) {
+          const expires = typeof data.expiresAt.toDate === 'function' 
+            ? data.expiresAt.toDate() 
+            : new Date(data.expiresAt);
+          
+          const updateCountdown = () => {
+            const now = new Date();
+            const ms = expires.getTime() - now.getTime();
+            if (ms <= 0) {
+              performLogout("Your session has expired (Time Out).");
+              if (countdownInterval) clearInterval(countdownInterval);
+            } else {
+              const m = Math.floor(ms / 60000);
+              const s = Math.floor((ms % 60000) / 1000);
+              setTimeLeft(`${m}:${s.toString().padStart(2, '0')}`);
+            }
+          };
+
+          updateCountdown();
+          if (countdownInterval) clearInterval(countdownInterval);
+          countdownInterval = setInterval(updateCountdown, 1000);
+
+          const msLeft = expires.getTime() - new Date().getTime();
+          if (expiryTimer) clearTimeout(expiryTimer);
+          expiryTimer = setTimeout(() => performLogout("Your session has expired."), msLeft + 500);
         }
       }, (error) => {
         console.error("License Monitor Error:", error);
       });
-      return () => unsubscribe();
+
+      return () => {
+        unsubscribe();
+        if (expiryTimer) clearTimeout(expiryTimer);
+        if (countdownInterval) clearInterval(countdownInterval);
+      };
+    } else {
+      setTimeLeft(null);
     }
   }, [isAuthenticated, view]);
 
@@ -1111,14 +1153,20 @@ export default function App() {
           </motion.button>
         </div>
 
-        {/* Time Display (Myanmar Time Zone) */}
-        <div className="flex items-center justify-center gap-4 mb-8">
+        {/* Time Display (Myanmar Time Zone & Countdown) */}
+        <div className="flex items-center justify-center gap-3 mb-8">
            <div className="flex flex-col items-center px-4 py-2 bg-blue-500/5 backdrop-blur-sm rounded-2xl border border-blue-500/10 shrink-0">
-              <span className="text-[8px] font-black text-blue-400/60 uppercase tracking-tighter">MYANMAR CLOCK</span>
+              <span className="text-[8px] font-black text-blue-400/60 uppercase tracking-tighter">CLOCKED</span>
               <span className="text-sm font-mono font-bold text-[#00f2ff]">{mmtTime}</span>
            </div>
+           {timeLeft && (
+             <div className="flex flex-col items-center px-4 py-2 bg-red-500/10 backdrop-blur-sm rounded-2xl border border-red-500/20 shrink-0">
+                <span className="text-[8px] font-black text-red-400 uppercase tracking-tighter animate-pulse">TERMINATION IN</span>
+                <span className="text-sm font-mono font-bold text-red-500">{timeLeft}</span>
+             </div>
+           )}
            <div className="flex flex-col items-center px-4 py-2 bg-purple-500/5 backdrop-blur-sm rounded-2xl border border-purple-500/10 shrink-0">
-              <span className="text-[8px] font-black text-purple-400/60 uppercase tracking-tighter">NEXT PREDICTION</span>
+              <span className="text-[8px] font-black text-purple-400/60 uppercase tracking-tighter">NEXT HIT</span>
               <span className="text-sm font-mono font-bold text-[#bc13fe]">{nextUpdateTime}</span>
            </div>
         </div>
