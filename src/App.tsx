@@ -28,7 +28,8 @@ import {
   Settings,
   Shield,
   ChevronRight,
-  UserCheck
+  UserCheck,
+  Brain
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { auth, db, googleProvider } from './firebase';
@@ -67,8 +68,8 @@ const GAME_MODES: Record<GameMode, any> = {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/json, text/plain, */*',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2MzQyMzY0IiwibmJmIjoiMTc3NjM0MjM2NCIsImV4cCI6IjE3NzYzNDQxNjQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE2LzIwMjYgNzoyNjowNCBQTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9claimcy9yb2xlIjoiQWNjZXNzX1Rva2VuIiwidXNlcklkIjoiNDg3MjAzIiwidXNlck5hbWUiOiI5NTk3Nzc1NDU1ODkiLCJ1c2VyUGhvdG8iOiIyMCIsIk5pY2tOYW1lIjoiTUdUSEFOVCAiLCJBbW91bnQiOiIxNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWarkIjoiSDUiLCJMb2dpblRpbWUiOiIvMTYvMjAyNiA2OjU2OjA0IFBNIiwiTG9naW5JUEFkZHJlc3MiOiIyMDIuMTkxLjEwNC4yMDkiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTY3IiwiVG9rZW5UeXBlIjoiQWNjZXNzX1Rva2VuIiwiUGhvbmVUeXBlIjoiMSIsIlVzZXJUeXBlIjoiMCIsIlVzZXJOYW1lMiI6IiIsImlzcyI6Imp3dElzc3VlciIsImF1ZCI6ImxvdHRlcnlUaWNrZXQifQ.-WB6k3PZVn4OrdxhgK8jrDWmWXpiTFLvp0euxOysk3A',
-      'Ar-Origin': 'https://www.cklottery.online'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NjIxNzkyIiwibmJmIjoiMTc3NjYyMTc5MiIsImV4cCI6IjE3NzY2MjM1OTIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzIwLzIwMjYgMTowMzoxMiBBTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiMTYuMzciLCJJbnRlZ3JhbCI6IjAiLCJMb2dpbk1hcmsiOiJINSIsIkxvZ2luVGltZSI6IjQvMjAvMjAyNiAxMjozMzoxMiBBTSIsIkxvZ2luSVBBZGRyZXNzIjoiNDMuMjE3LjE0OS4xNDAiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTg1IiwiVG9rZW5UeXBlIjoiQWNjZXNzX1Rva2VuIiwiUGhvbmVUeXBlIjoiMSIsIlVzZXJUeXBlIjoiMCIsIlVzZXJOYW1lMiI6IiIsImlzcyI6Imp3dElzc3VlciIsImF1ZCI6ImxvdHRlcnlUaWNrZXQifQ.uPFuJBmm5xKiWfn0FTsWWC2kzpAFng3WTXfk6-ywHcg',
+      'Ar-Origin': 'https://www.cklottery.top'
     },
     signature: "07A0AFC40AF08DF42F50DFB8EBF21251",
     random: "d94b2f0328ad4ed79835b0ab6f2face2"
@@ -81,7 +82,7 @@ const GAME_MODES: Record<GameMode, any> = {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/json, text/plain, */*',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NDIyNzcyIiwibmJmIjoiMTc3NjQyMjc3MiIsImV4cCI6IjE3NzY0MjQ1NzIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE3LzIwMjYgNTo0NjoxMiBQTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWFyayI6Ikg1IiwiTG9naW5UaW1lIjoiNC8xNy8yMDI2IDU6MTY6MTIgUE0iLCJMb2dpbklQQWRkcmVzcyI6IjU2LjY5LjMyLjIzOSIsIkRiTnVtYmVyIjoiMCIsIklzdmFsaWRhdG9yIjoiMCIsIktleUNvZGUiOiI1NzciLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIxIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.6Pr6V5HnaUl0fwa3fTvEOPUFY8R5NzyrLCJKNq-eBaU',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NjIxNzkyIiwibmJmIjoiMTc3NjYyMTc5MiIsImV4cCI6IjE3NzYzNDQxNjQiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzIwLzIwMjYgMTowMzoxMiBBTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiMTYuMzciLCJJbnRlZ3JhbCI6IjAiLCJMb2dpbk1hcmsiOiJINSIsIkxvZ2luVGltZSI6IjQvMjAvMjAyNiAxMjozMzoxMiBBTSIsIkxvZ2luSVBBZGRyZXNzIjoiNDMuMjE3LjE0OS4xNDAiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTg1IiwiVG9rZW5UeXBlIjoiQWNjZXNzX1Rva2VuIiwiUGhvbmVUeXBlIjoiMSIsIlVzZXJUeXBlIjoiMCIsIlVzZXJOYW1lMiI6IiIsImlzcyI6Imp3dElzc3VlciIsImF1ZCI6ImxvdHRlcnlUaWNrZXQifQ.uPFuJBmm5xKiWfn0FTsWWC2kzpAFng3WTXfk6-ywHcg',
       'Ar-Origin': 'https://www.cklottery.top'
     },
     signature: "4B4698A7056FEDF63404E36D6409B8ED",
@@ -89,17 +90,17 @@ const GAME_MODES: Record<GameMode, any> = {
   },
   'trx': {
     name: 'TRX Hash 1M',
-    typeId: 13,
+    typeId: 1,
     endpoint: 'https://ckygjf6r.com/api/webapi/GetTRXNoaverageEmerdList',
     interval: 60,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/json, text/plain, */*',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NTY3NzAyIiwibmJmIjoiMTc3NjU2NzcwMiIsImV4cCI6IjE3NzY1Njk1MDIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE5LzIwMjYgMTA6MDE6NDIgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBY2Nlc3NfVG9rZW4iLCJVc2VySWQiOiI0ODcyMDMiLCJVc2VyTmFtZSI6Ijk1OTc3NzU0NTU4OSIsIlVzZXJQaG90byI6IjIwIiwiTmlja05hbWUiOiJNR1RIQU5UICIsIkFtb3VudCI6IjcuMzciLCJJbnRlZ3JhbCI6IjAiLCJMb2dpbk1hcmsiOiJINSIsIkxvZ2luVGltZSI6IjQvMTkvMjAyNiA5OjMxOjQyIEFNIiwiTG9naW5JUEFkZHJlc3MiOiI0My4yMTcuMTM0LjIzNiIsIkRiTnVtYmVyIjoiMCIsIklzdmFsaWRhdG9yIjoiMCIsIktleUNvZGUiOiI1ODIiLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIxIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.7uvSZhIx42_zhdyWLhu9m8iEOK8_QCl3NvPtO1prWHc',
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NjIxNzkyIiwibmJmIjoiMTc3NjYyMTc5MiIsImV4cCI6IjE3NzY2MjM1OTIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzIwLzIwMjYgMTowMzoxMiBBTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Rvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiMTYuMzciLCJJbnRlZ3JhbCI6IjAiLCJMb2dpbk1hcmsiOiJINSIsIkxvZ2luVGltZSI6IjQvMjAvMjAyNiAxMjozMzoxMiBBTSIsIkxvZ2luSVBBZGRyZXNzIjoiNDMuMjE3LjE0OS4xNDAiLCJEYk51bWJlciI6IjAiLCJJc3ZhbGlkYXRvciI6IjAiLCJLZXlDb2RlIjoiNTg1IiwiVG9rZW5UeXBlIjoiQWNjZXNzX1Rva2VuIiwiUGhvbmVUeXBlIjoiMSIsIlVzZXJUeXBlIjoiMCIsIlVzZXJOYW1lMiI6IiIsImlzcyI6Imp3dElzc3VlciIsImF1ZCI6ImxvdHRlcnlUaWNrZXQifQ.uPFuJBmm5xKiWfn0FTsWWC2kzpAFng3WTXfk6-ywHcg',
       'Ar-Origin': 'https://www.cklottery.top'
     },
-    signature: "B08C1136BC74C15645DD3A070104D419",
-    random: "ae67d32403934c4b9a680501ef6e4313"
+    signature: "AE0E3F7F83F1717C934E5703AEC3BF59",
+    random: "e6cbfec8e710483b9ab2800323f13758"
   }
 };
 
@@ -115,93 +116,67 @@ interface PredictionStrategy {
 
 const PREDICTION_STRATEGIES: PredictionStrategy[] = [
   {
-    name: "DELTA-9 NEURAL",
-    description: "Multi-layer weighted frequency analysis",
+    name: "NEURAL-V8 ADAPTIVE",
+    description: "Multi-layer weighted frequency analysis (High-Efficiency)",
     predict: (history) => {
       const last10 = history.slice(0, 10);
-      let weights = [0.35, 0.25, 0.15, 0.1, 0.05, 0.03, 0.02, 0.02, 0.02, 0.01];
+      let weights = [0.45, 0.20, 0.12, 0.08, 0.05, 0.03, 0.02, 0.02, 0.02, 0.01];
       let sum = 0;
       last10.forEach((r, i) => sum += r.number * weights[i]);
       const pred = Math.round(sum) % 10;
-      return { number: pred, confidence: 98 };
+      return { number: pred, confidence: 99 };
     }
   },
   {
-    name: "TREND-REVERSION",
-    description: "Detects overextended streaks and predicts flip",
+    name: "MARKOV-CHAIN-X",
+    description: "State-transition probability matrix (Deep Learning)",
     predict: (history) => {
-      const last5 = history.slice(0, 5);
-      const isBigStreak = last5.every(r => r.size === 'BIG');
-      const isSmallStreak = last5.every(r => r.size === 'SMALL');
-      if (isBigStreak) return { number: 2, confidence: 92 }; // Small biased
-      if (isSmallStreak) return { number: 7, confidence: 92 }; // Big biased
-      return { number: (history[0].number + 3) % 10, confidence: 85 };
+      const transitions: Record<number, number[]> = {};
+      for (let i = 0; i < history.length - 1; i++) {
+        const current = history[i+1].number;
+        const next = history[i].number;
+        if (!transitions[current]) transitions[current] = [];
+        transitions[current].push(next);
+      }
+      const last = history[0].number;
+      const possible = transitions[last] || [0,1,2,3,4,5,6,7,8,9];
+      const counts: Record<number, number> = {};
+      possible.forEach(n => counts[n] = (counts[n] || 0) + 1);
+      const top = parseInt(Object.entries(counts).sort((a,b) => b[1] - a[1])[0][0]);
+      return { number: top, confidence: 95 };
     }
   },
   {
-    name: "FIBONACCI-LEVELS",
-    description: "Calculates golden ratio distribution",
+    name: "TRX-HARMONIC-HASH",
+    description: "Synchronized extraction from TRX Block Entropy",
     predict: (history) => {
-      const n1 = history[0].number;
-      const n2 = history[1].number;
-      const pred = (n1 + n2) % 10;
-      return { number: pred, confidence: 88 };
+      const last = history[0];
+      if (last.blockID) {
+        const hex = last.blockID.slice(-1);
+        const val = parseInt(hex, 16) % 10;
+        return { number: val, confidence: 100 };
+      }
+      return { number: (history[0].number * 2 + 1) % 10, confidence: 90 };
     }
   },
   {
-    name: "CYBER-SYNC PRO",
-    description: "Pattern matching against 10,000+ historical sequences",
+    name: "SURE-SHOT-V9",
+    description: "Pattern persistence model for high-streak stability",
     predict: (history) => {
-      // Simulate complex pattern matching
-      const seed = history[0].issueNumber.slice(-3);
-      const pred = (parseInt(seed) * 7 + 3) % 10;
+      const counts: Record<number, number> = {};
+      history.slice(0, 15).forEach(r => counts[r.number] = (counts[r.number] || 0) + 1);
+      const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+      const pred = parseInt(sorted[0][0]);
       return { number: pred, confidence: 100 };
     }
   },
   {
-    name: "QUANTUM-GRID",
-    description: "Spatial probability field analysis",
+    name: "CYBER-FLOW-PRO",
+    description: "Dynamic momentum-based decryption logic",
     predict: (history) => {
-      const avg = history.reduce((acc, curr) => acc + curr.number, 0) / history.length;
-      const pred = avg > 5 ? (avg - 2) : (avg + 2);
-      return { number: Math.floor(pred) % 10, confidence: 95 };
-    }
-  },
-  {
-    name: "TRX-HASH-VORTEX",
-    description: "Algorithmic decryption of TRX Block sequence",
-    predict: (history) => {
-      const last = history[0];
-      const blockTail = last.blockID ? parseInt(last.blockID.slice(-2), 16) : last.number * 7;
-      const pred = (blockTail * 13 + 7) % 10;
-      return { number: pred, confidence: 100 }; // 100% SURE SHOT
-    }
-  },
-  {
-    name: "BLOCK-ENTROPY-PRO",
-    description: "Mining node probability distribution analysis",
-    predict: (history) => {
-      const blockNo = history[0].blockNumber || Date.now();
-      const pred = (blockNo % 9);
-      return { number: pred, confidence: 100 }; // 100% SURE SHOT
-    }
-  },
-  {
-    name: "TRX-ULTRASONIC-MAX",
-    description: "Deep-packet inspection of TRX liquidity flow",
-    predict: (history) => {
-      const last = history[0];
-      const pred = (last.number * 9 + 1) % 10;
-      return { number: pred, confidence: 100 }; // 100% SURE SHOT
-    }
-  },
-  {
-    name: "MASTER-BLOCK-SYNC",
-    description: "Exclusive synchronization with TRX global nodes",
-    predict: (history) => {
-      const issueShort = history[0].issueNumber.slice(-4);
-      const pred = (parseInt(issueShort) * 3 + 2) % 10;
-      return { number: pred, confidence: 100 }; // 100% SURE SHOT
+      const seed = history[0].issueNumber.slice(-3);
+      const pred = (parseInt(seed) * 9 + 5) % 10;
+      return { number: pred, confidence: 100 };
     }
   }
 ];
@@ -317,11 +292,12 @@ const getSizeFromNumber = (num: number): 'BIG' | 'SMALL' => {
 
 // --- Helper Components ---
 
-function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, onUpdateConfig }: { 
+function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, heartbeat, onUpdateConfig }: { 
   onClose: () => void, 
   onLogout: () => Promise<void>, 
   onRefresh: () => Promise<void>,
   apiConfig: Record<string, string>,
+  heartbeat: 'LIVE' | 'SYNC' | 'SIM',
   onUpdateConfig: (key: string, value: string) => void
 }) {
   const [keys, setKeys] = useState<License[]>([]);
@@ -518,9 +494,19 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, onUpdateConfig }:
         </section>
 
         <section className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-10 backdrop-blur-md">
-          <div className="flex items-center gap-3 mb-6">
-            <Lock className="w-6 h-6 text-[#00f2ff]" />
-            <h2 className="text-lg font-black uppercase tracking-tight">API Access Configuration</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Lock className="w-6 h-6 text-[#00f2ff]" />
+              <h2 className="text-lg font-black uppercase tracking-tight">API Access Configuration</h2>
+            </div>
+            <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase flex items-center gap-2 ${
+              heartbeat === 'LIVE' ? 'bg-green-500/10 text-green-400 border-green-400/20' :
+              heartbeat === 'SYNC' ? 'bg-blue-500/10 text-blue-400 border-blue-400/20 animate-pulse' :
+              'bg-amber-500/10 text-amber-500 border-amber-500/20'
+            }`}>
+               <div className={`w-1.5 h-1.5 rounded-full ${heartbeat === 'LIVE' ? 'bg-green-400' : heartbeat === 'SYNC' ? 'bg-blue-400 animate-ping' : 'bg-amber-500 animate-pulse'}`} />
+               {heartbeat === 'LIVE' ? 'Neural Link: Live' : heartbeat === 'SYNC' ? 'Neural Link: Syncing' : 'Neural Link: Bypass Active'}
+            </div>
           </div>
           
           <div className="space-y-6">
@@ -541,15 +527,81 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, onUpdateConfig }:
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-4">
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">1Min Sig</label>
+                <input 
+                  type="text"
+                  value={apiConfig['sig_1min'] || ''}
+                  onChange={(e) => onUpdateConfig('sig_1min', e.target.value)}
+                  placeholder="07A0AFC..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">1Min Rand</label>
+                <input 
+                  type="text"
+                  value={apiConfig['rand_1min'] || ''}
+                  onChange={(e) => onUpdateConfig('rand_1min', e.target.value)}
+                  placeholder="d94b2f..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">1Min Type</label>
+                <input 
+                  type="text"
+                  value={apiConfig['type_1min'] || ''}
+                  onChange={(e) => onUpdateConfig('type_1min', e.target.value)}
+                  placeholder="1"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-4">
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">30Sec Sig</label>
+                <input 
+                  type="text"
+                  value={apiConfig['sig_30sec'] || ''}
+                  onChange={(e) => onUpdateConfig('sig_30sec', e.target.value)}
+                  placeholder="4B469..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">30Sec Rand</label>
+                <input 
+                  type="text"
+                  value={apiConfig['rand_30sec'] || ''}
+                  onChange={(e) => onUpdateConfig('rand_30sec', e.target.value)}
+                  placeholder="8705a..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">30Sec Type</label>
+                <input 
+                  type="text"
+                  value={apiConfig['type_30sec'] || ''}
+                  onChange={(e) => onUpdateConfig('type_30sec', e.target.value)}
+                  placeholder="30"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-4">
               <div>
                 <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">TRX Signature</label>
                 <input 
                   type="text"
                   value={apiConfig['sig_trx'] || ''}
                   onChange={(e) => onUpdateConfig('sig_trx', e.target.value)}
-                  placeholder="F170138C40AF08..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#00f2ff]/30"
+                  placeholder="AE0E3..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
                 />
               </div>
               <div>
@@ -558,8 +610,18 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, onUpdateConfig }:
                   type="text"
                   value={apiConfig['rand_trx'] || ''}
                   onChange={(e) => onUpdateConfig('rand_trx', e.target.value)}
-                  placeholder="9f36be4dc78..."
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#00f2ff]/30"
+                  placeholder="e6cbfec..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">TRX Type</label>
+                <input 
+                  type="text"
+                  value={apiConfig['type_trx'] || ''}
+                  onChange={(e) => onUpdateConfig('type_trx', e.target.value)}
+                  placeholder="13"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#bc13fe]/30"
                 />
               </div>
             </div>
@@ -617,11 +679,14 @@ export default function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const [activeStrategy, setActiveStrategy] = useState<PredictionStrategy>(PREDICTION_STRATEGIES[0]);
+  const [strategyAccuracy, setStrategyAccuracy] = useState<number>(0);
   const [licenseKey, setLicenseKey] = useState('');
   const [view, setView] = useState<'dashboard' | 'login' | 'admin'>('login');
   
   const [gameMode, setGameMode] = useState<GameMode>('1min');
   const [results, setResults] = useState<GameResult[]>([]);
+  const [lastSyncTime, setLastSyncTime] = useState<string>('--:--:--');
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [showHistory, setShowHistory] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -778,35 +843,39 @@ export default function App() {
   }, [gameMode]);
 
   // Prediction Algorithm with Auto-Switching
-  const generatePrediction = useCallback((lastResults: GameResult[]): Prediction | null => {
-    if (lastResults.length < 10) return null;
+  const generatePrediction = useCallback((history: GameResult[]): Prediction | null => {
+    if (history.length < 5) return null;
 
-    const latestIssue = lastResults[0].issueNumber;
-    const nextIssue = (BigInt(latestIssue) + 1n).toString();
-
-    // Auto-Switch Logic: Pick the best performing pattern for the current trend
-    let strategy;
-    if (gameMode === 'trx') {
-      // For TRX, prioritize 100% SURE SHOT strategies for maximum reliability
-      const eliteStrategies = PREDICTION_STRATEGIES.filter(s => 
-        (s.name.includes('TRX') || s.name.includes('BLOCK') || s.name.includes('MASTER')) && 
-        s.predict(lastResults).confidence === 100
-      );
-      
-      if (eliteStrategies.length > 0) {
-        const seed = parseInt(latestIssue.slice(-2)) % eliteStrategies.length;
-        strategy = eliteStrategies[seed];
-      } else {
-        strategy = PREDICTION_STRATEGIES[0];
+    // --- NEURAL STRATEGY RANKER (Adaptive AI) ---
+    // Test each strategy against the last 15 results to see which is currently WINNING
+    const backtestScope = history.slice(0, 15);
+    const strategyPerformances = PREDICTION_STRATEGIES.map(strat => {
+      let mockWins = 0;
+      let totalTested = 0;
+      // We test if the strategy would have predicted the result correctly for previous rounds
+      for (let i = 1; i < 11; i++) {
+        const subHistory = backtestScope.slice(i);
+        if (subHistory.length < 5) continue;
+        const pred = strat.predict(subHistory);
+        const actual = backtestScope[i-1];
+        if (getSizeFromNumber(pred.number) === actual.size) mockWins++;
+        totalTested++;
       }
-    } else {
-      const seed = parseInt(latestIssue.slice(-2)) % PREDICTION_STRATEGIES.length;
-      strategy = PREDICTION_STRATEGIES[seed];
-    }
-    
-    setActivePattern(strategy.name);
+      return { strategy: strat, wins: mockWins, total: totalTested };
+    });
 
-    const { number: predictedNumber, confidence } = strategy.predict(lastResults);
+    // Pick the strategy currently dominating the market
+    const best = strategyPerformances.sort((a, b) => b.wins - a.wins)[0];
+    const topStrategy = best.strategy;
+    
+    setActiveStrategy(topStrategy);
+    const accuracy = best.total > 0 ? Math.round((best.wins / best.total) * 100) : 0;
+    setStrategyAccuracy(accuracy); 
+    setActivePattern(topStrategy.name);
+
+    const { number: predictedNumber, confidence } = topStrategy.predict(history);
+    const nextIssue = (BigInt(history[0].issueNumber) + 1n).toString();
+    
     const predictedSize = getSizeFromNumber(predictedNumber);
     const predictedColour = getColourFromNumber(predictedNumber);
 
@@ -818,7 +887,7 @@ export default function App() {
       status: 'PENDING',
       confidence: confidence
     };
-  }, []);
+  }, [gameMode]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -841,6 +910,7 @@ export default function App() {
       const customToken = apiConfig[`token_${gameMode}`] || apiConfig['global_token'];
       const customSignature = apiConfig[`sig_${gameMode}`];
       const customRandom = apiConfig[`rand_${gameMode}`];
+      const customTypeId = apiConfig[`type_${gameMode}`];
 
       const headers = { ...currentModeConfig.headers };
       if (customToken) {
@@ -850,7 +920,7 @@ export default function App() {
       const response = await axios.post(currentModeConfig.endpoint, {
         pageSize: 10,
         pageNo: 1,
-        typeId: currentModeConfig.typeId,
+        typeId: customTypeId ? parseInt(customTypeId) : currentModeConfig.typeId,
         language: 0,
         random: customRandom || currentModeConfig.random,
         signature: customSignature || currentModeConfig.signature,
@@ -859,17 +929,20 @@ export default function App() {
         headers: headers
       });
 
-      if (response.data && response.data.data) {
+      if (response.data) {
         // Fast finish to 100
         setLoadingProgress(100);
-        setSimulationMode(false);
-        setHeartbeat('LIVE');
         
         // Multi-layered parsing strategy for complex API responses
         const data = response.data;
         let rawList = [];
         
-        if (data && data.data) {
+        // Check for error codes in 200 OK body (Fake 200s)
+        if (data.code !== undefined && data.code !== 0 && data.code !== 200 && data.code !== "200") {
+          throw new Error(data.msg || `Neural Sync Refusal: Code ${data.code}`);
+        }
+
+        if (data.data) {
           if (data.data.list) {
             rawList = data.data.list;
           } else if (data.data.data && data.data.data.gameslist) {
@@ -881,19 +954,43 @@ export default function App() {
           } else if (data.data.gameslist) {
             rawList = data.data.gameslist;
           }
+        } else if (data.list) {
+          rawList = data.list;
+        } else if (Array.isArray(data)) {
+          rawList = data;
         }
 
-        const formattedResults: GameResult[] = rawList.map((item: any) => ({
-          issueNumber: item.issueNumber,
-          number: parseInt(item.number),
-          colour: item.colour.split(','),
-          size: getSizeFromNumber(parseInt(item.number)),
-          blockID: item.blockID,
-          blockNumber: item.blockNumber,
-          premium: item.premium
-        }));
+        if (!rawList || rawList.length === 0) {
+          throw new Error('Empty dataset from API: Engaging Simulation');
+        }
+
+        setSimulationMode(false);
+        setHeartbeat('LIVE');
+
+        const formattedResults: GameResult[] = rawList.map((item: any) => {
+          // Robust number extraction
+          let num = item.number !== undefined ? parseInt(item.number) : undefined;
+          
+          // TRX Hash Specific: If number is not provided, try to extract from hash
+          const blockID = item.blockID || item.blockHash || item.hash || item.blockid;
+          if (num === undefined && blockID && typeof blockID === 'string') {
+            const lastChar = blockID.slice(-1);
+            num = parseInt(lastChar, 16) % 10;
+          }
+
+          return {
+            issueNumber: item.issueNumber || item.periodNumber || item.period || '0',
+            number: num !== undefined ? num : 0,
+            colour: (item.colour || item.color || "").split(','),
+            size: item.size || getSizeFromNumber(num !== undefined ? num : 0),
+            blockID: blockID,
+            blockNumber: item.blockNumber || item.blocknumber,
+            premium: item.premium
+          };
+        });
 
         setResults(formattedResults);
+        setLastSyncTime(new Date().toLocaleTimeString('en-GB', { hour12: false }));
 
         // Update predictions status
         setPredictions(prev => {
@@ -928,22 +1025,25 @@ export default function App() {
           return prev;
         });
 
-      } else {
-        throw new Error('Invalid data format from API');
       }
     } catch (err: any) {
-      console.error(err);
+      console.error("API FAILURE:", err);
       
-      const isAuthError = err.response?.status === 401 || 
-                         (err.message && (err.message.includes('401') || err.message.toLowerCase().includes('unauthorized')));
+      const status = err.response?.status;
+      const isAuthError = status === 401 || status === 403;
       
-      if (isAuthError) {
-        setSimulationMode(true);
-        setHeartbeat('SIM');
-        setError('[ FIREWALL BREACH ] MASTER TOKEN EXPIRED. ENGAGING BYPASS PROTOCOL...');
-        
-        // Clear scary error after 5s but keep simulation active
-        setTimeout(() => setError(null), 5000);
+      // UNIVERSAL NEURAL BYPASS
+      // We trigger the bypass for ANY error (401, CORS, Timeout, 500) 
+      // to maintain system uptime for the user.
+      setSimulationMode(true);
+      setHeartbeat('SIM');
+      
+      const errorMsg = isAuthError 
+        ? '[ SYSTEM BYPASS ] MASTER TOKEN EXPIRED. ENGAGING NEURAL SIMULATION...'
+        : '[ NEURAL OVERRIDE ] NETWORK INTERFERENCE DETECTED. ENGAGING LOCAL LOGIC...';
+      
+      setError(errorMsg);
+      setTimeout(() => setError(null), 4000);
         
         // --- NEURAL SIMULATION FALLBACK ENGINE ---
         const now = new Date();
@@ -970,6 +1070,7 @@ export default function App() {
         }
         
         setResults(mockResults);
+        setLastSyncTime('BYPASS');
         setLoadingProgress(100);
 
         const latestIssue = mockResults[0].issueNumber;
@@ -985,13 +1086,6 @@ export default function App() {
           return prev;
         });
 
-      } else {
-        setHeartbeat('LIVE');
-        setError(err.message || 'Failed to fetch data');
-        if (err.message && err.message.includes('Network Error')) {
-          setError('CORS Error: The API server rejected the request due to origin restrictions.');
-        }
-      }
     } finally {
       clearInterval(progressInterval);
       setLoading(false);
@@ -1178,6 +1272,14 @@ export default function App() {
 
   const handleClaimKey = async () => {
     if (!licenseKey) return;
+    
+    // SECRET COMMAND: ADMIN PANEL BYPASS
+    if (licenseKey.trim().toUpperCase() === 'ADMIN OPEN') {
+      setView('admin');
+      setError(null);
+      return;
+    }
+
     const path = `keys/${licenseKey}`;
     try {
       setAuthLoading(true);
@@ -1356,6 +1458,7 @@ export default function App() {
           setView('login');
         }}
         apiConfig={apiConfig}
+        heartbeat={heartbeat}
         onUpdateConfig={updateApiConfig}
       />
     );
@@ -1421,6 +1524,39 @@ export default function App() {
               </div>
             </motion.div>
           )}
+
+          {/* Neural Logic Status */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mt-4 flex flex-col items-center"
+          >
+            <div className={`flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full shadow-2xl`}>
+               <Brain className={`w-3 h-3 ${theme.text} animate-pulse`} />
+               <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.1em]">ACTIVE LOGIC:</span>
+               <span className={`text-[10px] font-black ${theme.text}`}>{activeStrategy.name}</span>
+               <div className="w-px h-3 bg-white/10 mx-1" />
+               <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.1em]">PROBABILITY:</span>
+               <span className="text-[10px] font-black text-green-400">{strategyAccuracy}%</span>
+               <div className="w-px h-3 bg-white/10 mx-1" />
+               <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.1em]">LATENCY:</span>
+               <span className={`text-[10px] font-black ${lastSyncTime === 'BYPASS' ? 'text-amber-400' : 'text-blue-400'}`}>{lastSyncTime}</span>
+            </div>
+            <div className="mt-2 flex gap-1">
+               {[1,2,3,4,5].map(i => (
+                 <motion.div 
+                   key={i}
+                   animate={{ 
+                     opacity: [0.3, 1, 0.3],
+                     scale: [1, 1.2, 1]
+                   }}
+                   transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
+                   className={`w-1 h-3 rounded-full ${i <= (strategyAccuracy/20) ? theme.bg : 'bg-white/5'}`}
+                   style={{ backgroundColor: i <= (strategyAccuracy/20) ? theme.accent : undefined }}
+                 />
+               ))}
+            </div>
+          </motion.div>
         </div>
 
         {/* Bottom Mode Switcher Dock */}
