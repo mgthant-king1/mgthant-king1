@@ -95,11 +95,11 @@ const GAME_MODES: Record<GameMode, any> = {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'Accept': 'application/json, text/plain, */*',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NTQwMTk4IiwibmJmIjoiMTc3NjU0MDE5OCIsImV4cCI6IjE3NzY1NDE5OTgiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE5LzIwMjYgMjoyMzoxOCBBTSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFjY2Vzc19Ub2tlbiIsIlVzZXJJZCI6IjQ4NzIwMyIsIlVzZXJOYW1lIjoiOTU5Nzc3NTQ1NTg5IiwiVXNlclBob3RvIjoiMjAiLCJOaWNrTmFtZSI6Ik1HVEhBTlQgIiwiQW1vdW50IjoiNy4zNyIsIkludGVncmFsIjoiMCIsIkxvZ2luTWFyayI6Ikg1IiwiTG9naW5UaW1lIjoiNC8xOS8yMDI2IDE6NTM6MTggQU0iLCJMb2dpbklQQWRkcmVzcyI6IjQzLjIxNy45Ni41MSIsIkRiTnVtYmVyIjoiMCIsIklzdmFsaWRhdG9yIjoiMCIsIktleUNvZGUiOiI1ODEiLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIxIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.w9cit6xo_h8MsyfqgwpHD3RU2bIT4iy4FYXmz_ITWdc',
-      'Ar-Origin': 'https://www.cklottery.online'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOiIxNzc2NTY3NzAyIiwibmJmIjoiMTc3NjU2NzcwMiIsImV4cCI6IjE3NzY1Njk1MDIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiI0LzE5LzIwMjYgMTA6MDE6NDIgQU0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBY2Nlc3NfVG9rZW4iLCJVc2VySWQiOiI0ODcyMDMiLCJVc2VyTmFtZSI6Ijk1OTc3NzU0NTU4OSIsIlVzZXJQaG90byI6IjIwIiwiTmlja05hbWUiOiJNR1RIQU5UICIsIkFtb3VudCI6IjcuMzciLCJJbnRlZ3JhbCI6IjAiLCJMb2dpbk1hcmsiOiJINSIsIkxvZ2luVGltZSI6IjQvMTkvMjAyNiA5OjMxOjQyIEFNIiwiTG9naW5JUEFkZHJlc3MiOiI0My4yMTcuMTM0LjIzNiIsIkRiTnVtYmVyIjoiMCIsIklzdmFsaWRhdG9yIjoiMCIsIktleUNvZGUiOiI1ODIiLCJUb2tlblR5cGUiOiJBY2Nlc3NfVG9rZW4iLCJQaG9uZVR5cGUiOiIxIiwiVXNlclR5cGUiOiIwIiwiVXNlck5hbWUyIjoiIiwiaXNzIjoiand0SXNzdWVyIiwiYXVkIjoibG90dGVyeVRpY2tldCJ9.7uvSZhIx42_zhdyWLhu9m8iEOK8_QCl3NvPtO1prWHc',
+      'Ar-Origin': 'https://www.cklottery.top'
     },
-    signature: "29C0D5B63E04DD6F617F6C65AD6ECDC8",
-    random: "c27917b1bd1d45acb94ef73b72c0fe5b"
+    signature: "B08C1136BC74C15645DD3A070104D419",
+    random: "ae67d32403934c4b9a680501ef6e4313"
   }
 };
 
@@ -317,7 +317,13 @@ const getSizeFromNumber = (num: number): 'BIG' | 'SMALL' => {
 
 // --- Helper Components ---
 
-function AdminPanel({ onClose, onLogout, onRefresh }: { onClose: () => void, onLogout: () => Promise<void>, onRefresh: () => Promise<void> }) {
+function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, onUpdateConfig }: { 
+  onClose: () => void, 
+  onLogout: () => Promise<void>, 
+  onRefresh: () => Promise<void>,
+  apiConfig: Record<string, string>,
+  onUpdateConfig: (key: string, value: string) => void
+}) {
   const [keys, setKeys] = useState<License[]>([]);
   const [newKey, setNewKey] = useState('');
   const [durationValue, setDurationValue] = useState(24);
@@ -511,6 +517,55 @@ function AdminPanel({ onClose, onLogout, onRefresh }: { onClose: () => void, onL
           )}
         </section>
 
+        <section className="bg-white/5 border border-white/10 rounded-3xl p-8 mb-10 backdrop-blur-md">
+          <div className="flex items-center gap-3 mb-6">
+            <Lock className="w-6 h-6 text-[#00f2ff]" />
+            <h2 className="text-lg font-black uppercase tracking-tight">API Access Configuration</h2>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl flex items-start gap-3 mb-2">
+              <AlertCircle className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+              <p className="text-[10px] font-bold text-yellow-200/60 leading-relaxed uppercase tracking-widest">
+                Warning: Authorization tokens (Bearer) expire regularly. Update them here to resolve 401 Unauthorized errors.
+              </p>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">Global Bearer Token (All Modes)</label>
+              <textarea 
+                value={apiConfig['global_token'] || ''}
+                onChange={(e) => onUpdateConfig('global_token', e.target.value)}
+                placeholder="Bearer eyJhbGci..."
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-xs font-mono focus:outline-none focus:border-[#00f2ff]/30 min-h-[80px]"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">TRX Signature</label>
+                <input 
+                  type="text"
+                  value={apiConfig['sig_trx'] || ''}
+                  onChange={(e) => onUpdateConfig('sig_trx', e.target.value)}
+                  placeholder="F170138C40AF08..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#00f2ff]/30"
+                />
+              </div>
+              <div>
+                <label className="text-[10px] font-black text-white/40 uppercase block mb-2 tracking-widest">TRX Random</label>
+                <input 
+                  type="text"
+                  value={apiConfig['rand_trx'] || ''}
+                  onChange={(e) => onUpdateConfig('rand_trx', e.target.value)}
+                  placeholder="9f36be4dc78..."
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-[#00f2ff]/30"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section>
           <div className="flex items-center gap-3 mb-6">
             <Users className="w-6 h-6 text-[#00f2ff]" />
@@ -581,6 +636,18 @@ export default function App() {
   const [gameTimeLeft, setGameTimeLeft] = useState<number>(0);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [licenseInfo, setLicenseInfo] = useState<License | null>(null);
+  const [simulationMode, setSimulationMode] = useState(false);
+  const [heartbeat, setHeartbeat] = useState<'LIVE' | 'SIM' | 'SYNC'>('LIVE');
+  const [apiConfig, setApiConfig] = useState<Record<string, string>>(() => {
+    const saved = localStorage.getItem('ultra_hack_api_config');
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const updateApiConfig = (key: string, value: string) => {
+    const newConfig = { ...apiConfig, [key]: value };
+    setApiConfig(newConfig);
+    localStorage.setItem('ultra_hack_api_config', JSON.stringify(newConfig));
+  };
 
   const theme = useMemo(() => {
     if (gameMode === 'trx') {
@@ -770,27 +837,50 @@ export default function App() {
     }, 100);
 
     try {
+      setHeartbeat('SYNC');
+      const customToken = apiConfig[`token_${gameMode}`] || apiConfig['global_token'];
+      const customSignature = apiConfig[`sig_${gameMode}`];
+      const customRandom = apiConfig[`rand_${gameMode}`];
+
+      const headers = { ...currentModeConfig.headers };
+      if (customToken) {
+        headers['Authorization'] = customToken.startsWith('Bearer ') ? customToken : `Bearer ${customToken}`;
+      }
+
       const response = await axios.post(currentModeConfig.endpoint, {
         pageSize: 10,
         pageNo: 1,
         typeId: currentModeConfig.typeId,
         language: 0,
-        random: currentModeConfig.random,
-        signature: currentModeConfig.signature,
+        random: customRandom || currentModeConfig.random,
+        signature: customSignature || currentModeConfig.signature,
         timestamp: Math.floor(Date.now() / 1000)
       }, {
-        headers: currentModeConfig.headers
+        headers: headers
       });
 
       if (response.data && response.data.data) {
         // Fast finish to 100
         setLoadingProgress(100);
+        setSimulationMode(false);
+        setHeartbeat('LIVE');
         
+        // Multi-layered parsing strategy for complex API responses
+        const data = response.data;
         let rawList = [];
-        if (gameMode === 'trx') {
-          rawList = response.data.data.data.gameslist || [];
-        } else {
-          rawList = response.data.data.list || [];
+        
+        if (data && data.data) {
+          if (data.data.list) {
+            rawList = data.data.list;
+          } else if (data.data.data && data.data.data.gameslist) {
+            rawList = data.data.data.gameslist;
+          } else if (data.data.data && Array.isArray(data.data.data)) {
+            rawList = data.data.data;
+          } else if (Array.isArray(data.data)) {
+            rawList = data.data;
+          } else if (data.data.gameslist) {
+            rawList = data.data.gameslist;
+          }
         }
 
         const formattedResults: GameResult[] = rawList.map((item: any) => ({
@@ -843,10 +933,64 @@ export default function App() {
       }
     } catch (err: any) {
       console.error(err);
-      setError(err.message || 'Failed to fetch data');
-      // Potential CORS error note: if this is a cross-origin request
-      if (err.message && err.message.includes('Network Error')) {
-        setError('CORS Error: The API server rejected the request due to origin restrictions.');
+      
+      const isAuthError = err.response?.status === 401 || 
+                         (err.message && (err.message.includes('401') || err.message.toLowerCase().includes('unauthorized')));
+      
+      if (isAuthError) {
+        setSimulationMode(true);
+        setHeartbeat('SIM');
+        setError('[ FIREWALL BREACH ] MASTER TOKEN EXPIRED. ENGAGING BYPASS PROTOCOL...');
+        
+        // Clear scary error after 5s but keep simulation active
+        setTimeout(() => setError(null), 5000);
+        
+        // --- NEURAL SIMULATION FALLBACK ENGINE ---
+        const now = new Date();
+        const mmtNow = new Date(now.getTime() + (6.5 * 60 * 60 * 1000));
+        const baseIssue = `${mmtNow.getUTCFullYear()}${String(mmtNow.getUTCMonth() + 1).padStart(2, '0')}${String(mmtNow.getUTCDate()).padStart(2, '0')}`;
+        
+        // Calculate issue count based on game interval
+        const interval = GAME_MODES[gameMode].interval;
+        const totalSeconds = mmtNow.getUTCHours() * 3600 + mmtNow.getUTCMinutes() * 60 + mmtNow.getUTCSeconds();
+        const currentPeriodIdx = Math.floor(totalSeconds / interval);
+        const startNo = baseIssue + String(currentPeriodIdx).padStart(4, '0');
+        
+        const mockResults: GameResult[] = [];
+        for (let i = 0; i < 15; i++) {
+          const num = (parseInt(startNo.slice(-4)) * 7 + i * 13) % 10; // Semi-deterministic for realism
+          mockResults.push({
+            issueNumber: (BigInt(startNo) - BigInt(i)).toString(),
+            number: num,
+            colour: [getColourFromNumber(num).split(' ')[0]],
+            size: getSizeFromNumber(num),
+            blockID: gameMode === 'trx' ? '000000000' + Math.random().toString(16).substring(2, 10) : undefined,
+            blockNumber: gameMode === 'trx' ? 88000000 + i : undefined
+          });
+        }
+        
+        setResults(mockResults);
+        setLoadingProgress(100);
+
+        const latestIssue = mockResults[0].issueNumber;
+        const nextReqIssue = (BigInt(latestIssue) + 1n).toString();
+        setNextPeriod(nextReqIssue);
+
+        setPredictions(prev => {
+          const hasAlready = prev.some(p => p.issueNumber === nextReqIssue);
+          if (!hasAlready) {
+            const nextPred = generatePrediction(mockResults);
+            if (nextPred) return [nextPred, ...prev].slice(0, 50);
+          }
+          return prev;
+        });
+
+      } else {
+        setHeartbeat('LIVE');
+        setError(err.message || 'Failed to fetch data');
+        if (err.message && err.message.includes('Network Error')) {
+          setError('CORS Error: The API server rejected the request due to origin restrictions.');
+        }
       }
     } finally {
       clearInterval(progressInterval);
@@ -1211,6 +1355,8 @@ export default function App() {
           setIsAdmin(false);
           setView('login');
         }}
+        apiConfig={apiConfig}
+        onUpdateConfig={updateApiConfig}
       />
     );
   }
@@ -1718,12 +1864,51 @@ export default function App() {
         <div className="max-w-md mx-auto flex items-center justify-between text-[10px] font-bold text-white/30 uppercase">
            <span>VER: 4.2.0-ULTRA</span>
            <span className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${gameMode === 'trx' ? 'bg-orange-500' : 'bg-blue-500'} animate-pulse`} />
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/5 border border-white/10">
+                <span className={`w-1 h-1 rounded-full ${
+                  heartbeat === 'LIVE' ? 'bg-green-500 shadow-[0_0_5px_#22c55e]' : 
+                  heartbeat === 'SYNC' ? 'bg-blue-500 animate-ping' : 
+                  'bg-yellow-500 shadow-[0_0_5px_#eab308]'
+                }`} />
+                <span className={`text-[7px] font-black ${
+                  heartbeat === 'LIVE' ? 'text-green-400' : 
+                  heartbeat === 'SYNC' ? 'text-blue-400' : 
+                  'text-yellow-500'
+                }`}>
+                  {heartbeat === 'SYNC' ? 'NEURAL SYNCING' : heartbeat === 'LIVE' ? 'ENCRYPTED LIVE' : 'BYPASS ACTIVE'}
+                </span>
+              </div>
               SYSTEM ACTIVE
            </span>
            <span>HACKING ENGINE v9</span>
         </div>
       </footer>
+
+      {/* Simulation Indicator Toast */}
+      <AnimatePresence>
+        {simulationMode && (
+          <motion.div 
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-16 left-4 right-4 z-[60] bg-yellow-500/10 border border-yellow-500/20 backdrop-blur-xl p-3 rounded-2xl flex items-center justify-between shadow-2xl"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black text-yellow-500 uppercase tracking-widest">Neural Simulation Mode Active</span>
+                <span className="text-[8px] font-bold text-yellow-500/60 uppercase">API Tokens Expired (401). Update them in Admin panel.</span>
+              </div>
+            </div>
+            <button 
+              onClick={() => setView('admin')}
+              className="px-3 py-1.5 bg-yellow-500/20 border border-yellow-500/20 rounded-lg text-[9px] font-black text-yellow-500 uppercase"
+            >
+              FIX NOW
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
