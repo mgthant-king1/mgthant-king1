@@ -844,49 +844,62 @@ export default function App() {
 
   // Prediction Algorithm with Auto-Switching
   const generatePrediction = useCallback((history: GameResult[]): Prediction | null => {
-    if (history.length < 5) return null;
+    if (!history || history.length < 5) return null;
 
-    // --- NEURAL STRATEGY RANKER (Adaptive AI) ---
-    // Test each strategy against the last 15 results to see which is currently WINNING
-    const backtestScope = history.slice(0, 15);
-    const strategyPerformances = PREDICTION_STRATEGIES.map(strat => {
-      let mockWins = 0;
-      let totalTested = 0;
-      // We test if the strategy would have predicted the result correctly for previous rounds
-      for (let i = 1; i < 11; i++) {
-        const subHistory = backtestScope.slice(i);
-        if (subHistory.length < 5) continue;
-        const pred = strat.predict(subHistory);
-        const actual = backtestScope[i-1];
-        if (getSizeFromNumber(pred.number) === actual.size) mockWins++;
-        totalTested++;
-      }
-      return { strategy: strat, wins: mockWins, total: totalTested };
-    });
+    try {
+      // --- NEURAL STRATEGY RANKER (Adaptive AI) ---
+      // Test each strategy against the last 15 results to see which is currently WINNING
+      const backtestScope = history.slice(0, 15);
+      const strategyPerformances = PREDICTION_STRATEGIES.map(strat => {
+        let mockWins = 0;
+        let totalTested = 0;
+        // We test if the strategy would have predicted the result correctly for previous rounds
+        for (let i = 1; i < 11; i++) {
+          const subHistory = backtestScope.slice(i);
+          if (subHistory.length < 5) continue;
+          try {
+            const pred = strat.predict(subHistory);
+            const actual = backtestScope[i-1];
+            if (actual && getSizeFromNumber(pred.number) === actual.size) mockWins++;
+            totalTested++;
+          } catch (e) { /* skip faulty iteration */ }
+        }
+        return { strategy: strat, wins: mockWins, total: totalTested };
+      });
 
-    // Pick the strategy currently dominating the market
-    const best = strategyPerformances.sort((a, b) => b.wins - a.wins)[0];
-    const topStrategy = best.strategy;
-    
-    setActiveStrategy(topStrategy);
-    const accuracy = best.total > 0 ? Math.round((best.wins / best.total) * 100) : 0;
-    setStrategyAccuracy(accuracy); 
-    setActivePattern(topStrategy.name);
+      // Pick the strategy currently dominating the market (safety sort)
+      const best = [...strategyPerformances].sort((a, b) => (b.wins || 0) - (a.wins || 0))[0];
+      if (!best) return null;
+      
+      const topStrategy = best.strategy;
+      
+      setActiveStrategy(topStrategy);
+      const accuracy = best.total > 0 ? Math.round((best.wins / best.total) * 100) : 0;
+      setStrategyAccuracy(accuracy); 
+      setActivePattern(topStrategy.name);
 
-    const { number: predictedNumber, confidence } = topStrategy.predict(history);
-    const nextIssue = (BigInt(history[0].issueNumber) + 1n).toString();
-    
-    const predictedSize = getSizeFromNumber(predictedNumber);
-    const predictedColour = getColourFromNumber(predictedNumber);
+      const prediction = topStrategy.predict(history);
+      const predictedNumber = isNaN(prediction.number) ? 0 : prediction.number;
+      const confidence = isNaN(prediction.confidence) ? 90 : prediction.confidence;
 
-    return {
-      issueNumber: nextIssue,
-      predictedNumber,
-      predictedSize,
-      predictedColour,
-      status: 'PENDING',
-      confidence: confidence
-    };
+      const latestIssue = history[0]?.issueNumber || "0";
+      const nextIssue = (BigInt(latestIssue) + 1n).toString();
+      
+      const predictedSize = getSizeFromNumber(predictedNumber);
+      const predictedColour = getColourFromNumber(predictedNumber);
+
+      return {
+        issueNumber: nextIssue,
+        predictedNumber,
+        predictedSize,
+        predictedColour,
+        status: 'PENDING',
+        confidence: confidence
+      };
+    } catch (err) {
+      console.error("Pattern Generation System Failure:", err);
+      return null;
+    }
   }, [gameMode]);
 
   const fetchData = useCallback(async () => {
@@ -926,7 +939,8 @@ export default function App() {
         signature: customSignature || currentModeConfig.signature,
         timestamp: Math.floor(Date.now() / 1000)
       }, {
-        headers: headers
+        headers: headers,
+        timeout: 15000
       });
 
       if (response.data) {
@@ -1018,9 +1032,14 @@ export default function App() {
         setPredictions(prev => {
           const hasAlready = prev.some(p => p.issueNumber === nextReqIssue);
           if (!hasAlready) {
-            const nextPred = generatePrediction(formattedResults);
-            // Limit to last 50 for session but UI only shows last 10
-            if (nextPred) return [nextPred, ...prev].slice(0, 50);
+            try {
+              const nextPred = generatePrediction(formattedResults);
+              // Limit to last 50 for session but UI only shows last 10
+              if (nextPred) return [nextPred, ...prev].slice(0, 50);
+            } catch (pErr) {
+              console.error("Neural Brain Jam:", pErr);
+              return prev;
+            }
           }
           return prev;
         });
@@ -1542,19 +1561,28 @@ export default function App() {
                <span className="text-[8px] font-bold text-white/40 uppercase tracking-[0.1em]">LATENCY:</span>
                <span className={`text-[10px] font-black ${lastSyncTime === 'BYPASS' ? 'text-amber-400' : 'text-blue-400'}`}>{lastSyncTime}</span>
             </div>
-            <div className="mt-2 flex gap-1">
-               {[1,2,3,4,5].map(i => (
-                 <motion.div 
-                   key={i}
-                   animate={{ 
-                     opacity: [0.3, 1, 0.3],
-                     scale: [1, 1.2, 1]
-                   }}
-                   transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
-                   className={`w-1 h-3 rounded-full ${i <= (strategyAccuracy/20) ? theme.bg : 'bg-white/5'}`}
-                   style={{ backgroundColor: i <= (strategyAccuracy/20) ? theme.accent : undefined }}
-                 />
-               ))}
+            
+            <div className="mt-3 flex items-center gap-3">
+              <div onClick={() => fetchData()} className="cursor-pointer flex items-center gap-1.5 px-3 py-1 bg-white/5 rounded-full border border-white/10 group hover:bg-white/10 transition-all">
+                <div className={`w-1.5 h-1.5 rounded-full ${heartbeat === 'LIVE' ? 'bg-[#00f2ff] shadow-[0_0_8px_#00f2ff]' : heartbeat === 'SYNC' ? 'bg-yellow-400 animate-pulse' : 'bg-red-500'} transition-all`} />
+                <span className="text-[8px] font-black text-white/40 uppercase tracking-tighter">
+                  {heartbeat === 'LIVE' ? 'Neural Link: Live' : heartbeat === 'SYNC' ? 'Neural Link: Syncing' : 'Neural Link: Bypass Active'}
+                </span>
+                <RefreshCw className={`w-2 h-2 text-white/30 group-hover:text-white/60 transition-all ${loading ? 'animate-spin' : ''}`} />
+              </div>
+
+              {[1,2,3,4,5].map(i => (
+                <motion.div 
+                  key={i}
+                  animate={{ 
+                    opacity: [0.3, 1, 0.3],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity }}
+                  className={`w-0.5 h-2 rounded-full ${i <= (strategyAccuracy/20) ? theme.bg : 'bg-white/5'}`}
+                  style={{ backgroundColor: i <= (strategyAccuracy/20) ? theme.accent : undefined }}
+                />
+              ))}
             </div>
           </motion.div>
         </div>
