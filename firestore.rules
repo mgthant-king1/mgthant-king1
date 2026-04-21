@@ -57,15 +57,13 @@ service cloud.firestore {
       // User Level Operations
       // 1. Claiming a key
       allow update: if (
-        isSignedIn() &&
         resource.data.isUsed == false &&
         request.resource.data.isUsed == true &&
-        request.resource.data.claimedBy == request.auth.uid &&
         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'claimedBy', 'claimedAt', 'isUsed', 'expiresAt'])
       );
 
       // 2. Monitoring their own key
-      allow read: if isSignedIn() && resource.data.claimedBy == request.auth.uid;
+      allow read: if (resource.data.claimedBy == request.auth.uid && request.auth != null) || (resource.data.isUsed == true);
     }
 
     // ===============================================================
