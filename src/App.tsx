@@ -211,6 +211,7 @@ interface License {
   key: string;
   status?: 'active' | 'used' | 'expired';
   isUsed?: boolean;
+  tier: 'free' | 'premium';
   durationValue: number;
   durationUnit: 'mins' | 'hour' | 'day' | 'month' | 'year' | 'lifetime';
   duration?: string;
@@ -309,6 +310,7 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, heartbeat, onUpda
   const [newKey, setNewKey] = useState('');
   const [durationValue, setDurationValue] = useState(24);
   const [durationUnit, setDurationUnit] = useState<License['durationUnit']>('hour');
+  const [selectedTier, setSelectedTier] = useState<'free' | 'premium'>('free');
   const [generating, setGenerating] = useState(false);
   const [adminError, setAdminError] = useState<string | null>(null);
 
@@ -363,6 +365,7 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, heartbeat, onUpda
         key,
         isUsed: false,
         status: 'active',
+        tier: selectedTier,
         durationValue: Number(durationValue),
         durationUnit,
         duration: durationStr,
@@ -440,7 +443,24 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, heartbeat, onUpda
             </motion.div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-white/40 uppercase tracking-widest pl-2">Neural Tier</label>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => setSelectedTier('free')}
+                  className={`flex-1 py-3 rounded-xl border text-[10px] font-black uppercase transition-all ${selectedTier === 'free' ? 'bg-blue-500/20 border-blue-400 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'bg-white/5 border-white/5 text-white/40'}`}
+                >
+                  Free Link
+                </button>
+                <button 
+                  onClick={() => setSelectedTier('premium')}
+                  className={`flex-1 py-3 rounded-xl border text-[10px] font-black uppercase transition-all ${selectedTier === 'premium' ? 'bg-[#bc13fe]/20 border-[#bc13fe] text-[#bc13fe] shadow-[0_0_10px_rgba(188,19,254,0.3)]' : 'bg-white/5 border-white/5 text-white/40'}`}
+                >
+                  Premium Access
+                </button>
+              </div>
+            </div>
             <div className="space-y-2">
               <label className="text-[10px] font-black text-white/40 uppercase tracking-widest pl-2">Duration Value</label>
               <input 
@@ -646,6 +666,11 @@ function AdminPanel({ onClose, onLogout, onRefresh, apiConfig, heartbeat, onUpda
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-mono text-sm font-black uppercase text-white tracking-widest">{key.key}</span>
                     <span className={`text-[8px] px-1.5 py-0.5 rounded font-black uppercase ${
+                      key.tier === 'premium' ? 'bg-[#bc13fe]/20 text-[#bc13fe] border border-[#bc13fe]/20' : 'bg-blue-500/10 text-blue-400 border border-blue-400/10'
+                    }`}>
+                      {key.tier || 'FREE'}
+                    </span>
+                    <span className={`text-[8px] px-1.5 py-0.5 rounded font-black uppercase ${
                       (key.status === 'active' || !key.isUsed) ? 'bg-green-500/20 text-green-400' : 'bg-blue-500/20 text-blue-400'
                     }`}>
                       {key.isUsed ? 'used' : 'active'}
@@ -704,6 +729,7 @@ export default function App() {
   const [nextUpdateTime, setNextUpdateTime] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState<string | null>(null);
   const [gameTimeLeft, setGameTimeLeft] = useState<number>(0);
+  const [licenseTier, setLicenseTier] = useState<'free' | 'premium'>('free');
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [licenseInfo, setLicenseInfo] = useState<License | null>(null);
   const [simulationMode, setSimulationMode] = useState(false);
@@ -1099,18 +1125,20 @@ export default function App() {
       const status = err.response?.status;
       const isAuthError = status === 401 || status === 403;
       
+      if (isAuthError) {
+        setAutoRefresh(false); // Stop spamming expired tokens
+      }
+
       // UNIVERSAL NEURAL BYPASS
-      // We trigger the bypass for ANY error (401, CORS, Timeout, 500) 
-      // to maintain system uptime for the user.
       setSimulationMode(true);
       setHeartbeat('SIM');
       
       const errorMsg = isAuthError 
-        ? '[ SYSTEM BYPASS ] MASTER TOKEN EXPIRED. ENGAGING NEURAL SIMULATION...'
-        : '[ NEURAL OVERRIDE ] NETWORK INTERFERENCE DETECTED. ENGAGING LOCAL LOGIC...';
+        ? '[ AUTH FAILURE ] MASTER TOKEN EXPIRED (401). PLEASE UPDATE TOKEN IN SETTINGS.'
+        : `[ NEURAL OVERRIDE ] API ERROR ${status || 'TIMEOUT'}. ENGAGING LOCAL LOGIC...`;
       
       setError(errorMsg);
-      setTimeout(() => setError(null), 4000);
+      setTimeout(() => setError(null), 6000);
         
         // --- NEURAL SIMULATION FALLBACK ENGINE ---
         const now = new Date();
@@ -1270,6 +1298,7 @@ export default function App() {
             }
           }
           setIsAuthenticated(true);
+          setLicenseTier(data.tier || 'free');
           setLicenseInfo(data);
           setView('dashboard');
         } else {
@@ -1399,6 +1428,7 @@ export default function App() {
           localStorage.setItem('ultra_hack_key', licenseKey);
           localStorage.setItem('ultra_hack_device_id', userId);
           setLicenseInfo(updatedData);
+          setLicenseTier(updatedData.tier || 'free');
           setIsAuthenticated(true);
           setView('dashboard');
         } else {
@@ -1406,6 +1436,7 @@ export default function App() {
           
           if ((data.status === 'used' || data.isUsed) && data.claimedBy === userId) {
              localStorage.setItem('ultra_hack_key', licenseKey);
+             setLicenseTier(data.tier || 'free');
              setLicenseInfo(data);
              setIsAuthenticated(true);
              setView('dashboard');
@@ -1730,51 +1761,70 @@ export default function App() {
         </div>
 
         {/* Sniper Mod Toggle */}
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={() => {
-            setIsSniperMode(!isSniperMode);
-            // reset flow for clarity
-            setPredictions([]);
-            setResults([]);
-            fetchData();
-          }}
-          className={`w-full mb-6 py-4 rounded-2xl flex items-center justify-between px-6 border transition-all relative overflow-hidden group ${
-            isSniperMode 
-              ? 'bg-red-500/10 border-red-500/30' 
-              : 'bg-white/5 border-white/10 hover:bg-white/10'
-          }`}
-        >
-          <div className="flex items-center gap-3 relative z-10">
-            <div className={`p-2 rounded-lg ${isSniperMode ? 'bg-red-500/20 text-red-500' : 'bg-white/5 text-white/40'}`}>
-              <Target className={isSniperMode ? 'animate-pulse' : ''} size={20} />
+        {licenseTier === 'premium' ? (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              setIsSniperMode(!isSniperMode);
+              // reset flow for clarity
+              setPredictions([]);
+              setResults([]);
+              fetchData();
+            }}
+            className={`w-full mb-6 py-4 rounded-2xl flex items-center justify-between px-6 border transition-all relative overflow-hidden group ${
+              isSniperMode 
+                ? 'bg-red-500/10 border-red-500/30' 
+                : 'bg-white/5 border-white/10 hover:bg-white/10'
+            }`}
+          >
+            <div className="flex items-center gap-3 relative z-10">
+              <div className={`p-2 rounded-lg ${isSniperMode ? 'bg-red-500/20 text-red-500' : 'bg-white/5 text-white/40'}`}>
+                <Target className={isSniperMode ? 'animate-pulse' : ''} size={20} />
+              </div>
+              <div className="flex flex-col items-start">
+                <span className={`text-xs font-black tracking-widest ${isSniperMode ? 'text-red-500' : 'text-white/80'}`}>
+                  SNIPER HIT MOD {isSniperMode ? '[ ON ]' : '[ OFF ]'}
+                </span>
+                <span className="text-[8px] font-bold text-white/30 uppercase">
+                  {isSniperMode ? 'Awaiting Data: 2-Period Neural Sync Active' : 'Engage for 100% Accuracy Signal Protocol'}
+                </span>
+              </div>
             </div>
-            <div className="flex flex-col items-start">
-              <span className={`text-xs font-black tracking-widest ${isSniperMode ? 'text-red-500' : 'text-white/80'}`}>
-                SNIPER HIT MOD {isSniperMode ? '[ ON ]' : '[ OFF ]'}
-              </span>
-              <span className="text-[8px] font-bold text-white/30 uppercase">
-                {isSniperMode ? 'Awaiting Data: 2-Period Neural Sync Active' : 'Engage for 100% Accuracy Signal Protocol'}
-              </span>
+            <div className="flex items-center gap-2 relative z-10">
+              <div className={`w-10 h-5 rounded-full relative transition-colors ${isSniperMode ? 'bg-red-500/40' : 'bg-white/10'}`}>
+                <motion.div 
+                  animate={{ x: isSniperMode ? 22 : 2 }}
+                  className={`w-4 h-4 rounded-full mt-0.5 shadow-lg ${isSniperMode ? 'bg-red-500' : 'bg-white/40'}`}
+                />
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 relative z-10">
-            <div className={`w-10 h-5 rounded-full relative transition-colors ${isSniperMode ? 'bg-red-500/40' : 'bg-white/10'}`}>
+            {isSniperMode && (
               <motion.div 
-                animate={{ x: isSniperMode ? 22 : 2 }}
-                className={`w-4 h-4 rounded-full mt-0.5 shadow-lg ${isSniperMode ? 'bg-red-500' : 'bg-white/40'}`}
+                initial={{ x: '-100%' }}
+                animate={{ x: '100%' }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/5 to-transparent pointer-events-none"
               />
+            )}
+          </motion.button>
+        ) : (
+          <div className="w-full mb-6 py-4 rounded-2xl flex items-center justify-between px-6 border border-white/5 bg-white/[0.02] opacity-50 cursor-not-allowed">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-white/5 text-white/20">
+                <Target size={20} />
+              </div>
+              <div className="flex flex-col items-start">
+                <span className="text-xs font-black tracking-widest text-white/40">
+                  SNIPER HIT MOD [ LOCKED ]
+                </span>
+                <span className="text-[8px] font-bold text-[#bc13fe] uppercase">
+                  Upgrade to Premium to Unlock 100% Signal
+                </span>
+              </div>
             </div>
+            <Lock className="w-4 h-4 text-white/20" />
           </div>
-          {isSniperMode && (
-            <motion.div 
-              initial={{ x: '-100%' }}
-              animate={{ x: '100%' }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/5 to-transparent pointer-events-none"
-            />
-          )}
-        </motion.button>
+        )}
 
         {/* Sniper Notification Box */}
         <AnimatePresence>
@@ -2107,8 +2157,9 @@ export default function App() {
               exit={{ height: 0, opacity: 0 }}
               className="space-y-3"
             >
-              <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-4 text-center">
-                {GAME_MODES[gameMode].name} PREDICTION HISTORY (LAST 10)
+              <h3 className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-4 text-center flex items-center justify-center gap-2">
+                {isSniperMode && <Target className="w-3 h-3 text-red-500 animate-pulse" />}
+                {GAME_MODES[gameMode].name} {isSniperMode ? 'SNIPER HIT' : 'PREDICTION'} HISTORY (LAST 10)
               </h3>
               {predictions.slice(0, 10).map((p, i) => (
                 <motion.div
@@ -2126,8 +2177,10 @@ export default function App() {
                       </span>
                       {p.isSniper && p.predictedNumber !== -1 && (
                         <div className="flex items-center gap-1 mt-0.5">
-                           <Crosshair className="w-2 h-2 text-red-500" />
-                           <span className="text-[7px] font-black text-red-500 uppercase tracking-widest">Sniper Hit Lock</span>
+                           <div className="px-1.5 py-0.5 rounded bg-red-500/20 border border-red-500/20 flex items-center gap-1">
+                              <Crosshair className="w-2 h-2 text-red-500" />
+                              <span className="text-[7px] font-black text-red-500 uppercase tracking-widest">Sniper Hit</span>
+                           </div>
                         </div>
                       )}
                     </div>
