@@ -731,11 +731,19 @@ export default function App() {
   const [gameTimeLeft, setGameTimeLeft] = useState<number>(0);
   const [licenseTier, setLicenseTier] = useState<'free' | 'premium'>('free');
   const [autoRefresh, setAutoRefresh] = useState(true);
+
   const [licenseInfo, setLicenseInfo] = useState<License | null>(null);
   const [simulationMode, setSimulationMode] = useState(false);
   const [isSniperMode, setIsSniperMode] = useState(false);
   const [showSniperNoti, setShowSniperNoti] = useState(false);
   const [heartbeat, setHeartbeat] = useState<'LIVE' | 'SIM' | 'SYNC'>('LIVE');
+
+  // Enforce tier restrictions
+  useEffect(() => {
+    if (licenseTier !== 'premium' && isSniperMode) {
+      setIsSniperMode(false);
+    }
+  }, [licenseTier, isSniperMode]);
   const [apiConfig, setApiConfig] = useState<Record<string, string>>(() => {
     const saved = localStorage.getItem('ultra_hack_api_config');
     return saved ? JSON.parse(saved) : {};
@@ -933,12 +941,16 @@ export default function App() {
 
       const latestIssue = history[0]?.issueNumber || "0";
       
+      const isPremium = licenseTier === 'premium';
+      
       // Sniper Mod Logic: 2 matches analyzing, 1 match prediction
       // We use the next issue number to determine the status in the 3-period cycle
       const nextIssue = (BigInt(latestIssue) + 1n).toString();
       const nextIssueInt = BigInt(nextIssue);
       
-      const isAnalyzingRound = isSniperMode && (nextIssueInt % 3n !== 0n);
+      // STRICT ENFORCEMENT: Sniper logic ONLY for premium
+      const isAnalyzingRound = isPremium && isSniperMode && (nextIssueInt % 3n !== 0n);
+      const isActualSniper = isPremium && isSniperMode;
       
       const predictedSize = getSizeFromNumber(predictedNumber);
       const predictedColour = getColourFromNumber(predictedNumber);
@@ -960,14 +972,14 @@ export default function App() {
         predictedSize,
         predictedColour,
         status: 'PENDING',
-        confidence: isSniperMode ? 100 : confidence,
-        isSniper: isSniperMode
+        confidence: isActualSniper ? 100 : confidence,
+        isSniper: isActualSniper
       };
     } catch (err) {
       console.error("Pattern Generation System Failure:", err);
       return null;
     }
-  }, [gameMode]);
+  }, [gameMode, isSniperMode, licenseTier]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -1297,9 +1309,12 @@ export default function App() {
               return;
             }
           }
+          const tier = data.tier || 'free';
           setIsAuthenticated(true);
-          setLicenseTier(data.tier || 'free');
+          setLicenseTier(tier);
           setLicenseInfo(data);
+          setPredictions([]);
+          if (tier !== 'premium') setIsSniperMode(false);
           setView('dashboard');
         } else {
           setLicenseInfo(null);
@@ -1425,19 +1440,25 @@ export default function App() {
             expiresAt: expiresAt
           });
           
+          const tier = updatedData.tier || 'free';
           localStorage.setItem('ultra_hack_key', licenseKey);
           localStorage.setItem('ultra_hack_device_id', userId);
           setLicenseInfo(updatedData);
-          setLicenseTier(updatedData.tier || 'free');
+          setLicenseTier(tier);
+          setPredictions([]);
+          if (tier !== 'premium') setIsSniperMode(false);
           setIsAuthenticated(true);
           setView('dashboard');
         } else {
           const userId = auth.currentUser?.uid || localStorage.getItem('ultra_hack_device_id');
           
+          const tier = data.tier || 'free';
           if ((data.status === 'used' || data.isUsed) && data.claimedBy === userId) {
              localStorage.setItem('ultra_hack_key', licenseKey);
-             setLicenseTier(data.tier || 'free');
+             setLicenseTier(tier);
              setLicenseInfo(data);
+             setPredictions([]);
+             if (tier !== 'premium') setIsSniperMode(false);
              setIsAuthenticated(true);
              setView('dashboard');
           } else if (data.status === 'expired') {
@@ -2177,10 +2198,23 @@ export default function App() {
                       </span>
                       {p.isSniper && p.predictedNumber !== -1 && (
                         <div className="flex items-center gap-1 mt-0.5">
-                           <div className="px-1.5 py-0.5 rounded bg-red-500/20 border border-red-500/20 flex items-center gap-1">
-                              <Crosshair className="w-2 h-2 text-red-500" />
-                              <span className="text-[7px] font-black text-red-500 uppercase tracking-widest">Sniper Hit</span>
-                           </div>
+                           <motion.div 
+                             initial={{ opacity: 0, scale: 0.9, x: -5 }}
+                             animate={{ opacity: 1, scale: 1, x: 0 }}
+                             className="px-2.5 py-1 rounded bg-gradient-to-r from-[#FFD700] via-[#FDB931] to-[#FFD700] flex items-center gap-1.5 shadow-[0_0_15px_rgba(251,191,36,0.3)] border border-yellow-200/50"
+                           >
+                              <Crown className="w-3 h-3 text-amber-900 fill-amber-900/20" />
+                              <span className="text-[8px] font-black text-amber-950 uppercase tracking-[0.1em] drop-shadow-sm">
+                                VIP Sniper Hit
+                              </span>
+                              <div className="flex gap-0.5 ml-1">
+                                <motion.div 
+                                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                  className="w-1 h-1 bg-amber-900 rounded-full" 
+                                />
+                              </div>
+                           </motion.div>
                         </div>
                       )}
                     </div>
